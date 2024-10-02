@@ -1,19 +1,22 @@
+import { pwa } from './pwa'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@nuxt/ui',
     '@nuxt/eslint',
+    '@vite-pwa/nuxt',
     ['@pinia/nuxt', { autoImports: ['defineStore', 'acceptHMRUpdate'] }],
   ],
 
-  experimental: {
-    // when using generate, payload js assets included in sw precache manifest
-    // but missing on offline, disabling extraction it until fixed
-    payloadExtraction: false,
-    renderJsonPayloads: true,
-    typedPages: true,
-  },
+  // experimental: {
+  // when using generate, payload js assets included in sw precache manifest
+  // but missing on offline, disabling extraction it until fixed
+  //   payloadExtraction: false,
+  //   renderJsonPayloads: true,
+  //   typedPages: true,
+  // },
 
   nitro: {
     esbuild: {
@@ -50,6 +53,6 @@ export default defineNuxtConfig({
       standalone: false,
     },
   },
-
+  pwa,
   compatibilityDate: '2024-10-02',
 })
