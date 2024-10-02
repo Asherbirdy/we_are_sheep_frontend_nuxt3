@@ -27,8 +27,8 @@ function toggleMenu() {
       @click="toggleMenu"
     />
     <nav
-      class="fixed top-0 right-0 h-full bg-white transform transition-transform"
-      :class="[isMenuOpen ? 'translate-x-0' : 'translate-x-full']"
+      class="fixed top-0 right-0 h-full bg-white transform transition-transform z-20"
+      :class="[isMenuOpen ? 'translate-x-0 w-9/12' : 'translate-x-full']"
     >
       <ul class="p-4 bg-white">
         <li><a href="#">Menu Item 1</a></li>
@@ -40,7 +40,3 @@ function toggleMenu() {
     <header>Footer</header>
   </div>
 </template>
-
-<style scoped>
-/* Add any additional styles here */
-</style>
