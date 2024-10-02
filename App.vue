@@ -4,6 +4,9 @@ import { appName } from '~/constants'
 useHead({
   title: appName,
 })
+
+const colorMode = useColorMode()
+colorMode.preference = 'light'
 </script>
 
 <template>
