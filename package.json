@@ -1,14 +1,19 @@
 {
-  "name": "nuxt-app",
-  "private": true,
+  "name": "we_are_sheep_frontend",
   "type": "module",
+  "private": true,
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "typecheck": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.5.5",
+    "pinia": "^2.2.4"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.6.2",
@@ -23,9 +28,5 @@
   },
   "resolutions": {
     "@typescript-eslint/utils": "^8.6.0"
-  },
-  "dependencies": {
-    "@pinia/nuxt": "^0.5.5",
-    "pinia": "^2.2.4"
   }
 }
