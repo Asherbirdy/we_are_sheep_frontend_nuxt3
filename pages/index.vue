@@ -1,6 +1,7 @@
 <template>
   <UContainer>
-    <UCard class="mt-10">
+    <h1>首頁</h1>
+    <!-- <UCard class="mt-10">
       <template #header>
         <div class="flex justify-between">
           <h1>Welcome to Nuxt UI Starter</h1>
@@ -19,6 +20,6 @@
       >
         Open Nuxt UI Documentation
       </UButton>
-    </UCard>
+    </UCard> -->
   </UContainer>
 </template>
