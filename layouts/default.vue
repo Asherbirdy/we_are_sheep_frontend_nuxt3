@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { AdminRoutes, PublicRoutes } from '@/enums'
+import { PublicRoutes } from '@/enums'
 
 const routes = [
   {
@@ -12,7 +12,7 @@ const routes = [
   },
   {
     label: '會員中心',
-    to: AdminRoutes.Home,
+    to: PublicRoutes.Login,
   },
 ]
 </script>
@@ -36,7 +36,7 @@ const routes = [
         </nav>
       </div>
     </header>
-    <main class="flex-grow">
+    <main class="flex-grow mx-2">
       <slot />
     </main>
     <nav class="md:hidden block fixed bottom-0 left-0 right-0 bg-white shadow-lg">
@@ -60,5 +60,3 @@ const routes = [
     </footer>
   </div>
 </template>
-
-<style scoped></style>

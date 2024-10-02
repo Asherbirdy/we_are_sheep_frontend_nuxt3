@@ -1,7 +1,7 @@
 export enum PublicRoutes {
   Home = '/',
   News = '/news',
-  LifeBible = '/lifeBible',
+  Login = '/login',
 }
 
 export enum AdminRoutes {
