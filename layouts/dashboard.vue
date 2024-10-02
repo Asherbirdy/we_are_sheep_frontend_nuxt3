@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 const isMenuOpen = ref(false)
 
-function toggleMenu() {
+const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
 }
 </script>
@@ -36,7 +36,9 @@ function toggleMenu() {
         <li><a href="#">Menu Item 3</a></li>
       </ul>
     </nav>
-    <slot />
+    <UContainer>
+      <slot />
+    </UContainer>
     <header>Footer</header>
   </div>
 </template>

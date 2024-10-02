@@ -16,6 +16,7 @@ export default nuxt(
             multiline: 1,
           },
         ],
+        'antfu/top-level-function': 'off',
       },
     },
   ),
