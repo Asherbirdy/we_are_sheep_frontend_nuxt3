@@ -1,7 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", '@nuxt/eslint',],
+  modules: [
+    '@nuxt/ui',
+    '@nuxt/eslint',
+    ['@pinia/nuxt', { autoImports: ['defineStore', 'acceptHMRUpdate'] }],
+  ],
 
   experimental: {
     // when using generate, payload js assets included in sw precache manifest
@@ -47,5 +51,5 @@ export default defineNuxtConfig({
     },
   },
 
-  compatibilityDate: '2024-10-02'
+  compatibilityDate: '2024-10-02',
 })

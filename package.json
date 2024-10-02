@@ -23,5 +23,9 @@
   },
   "resolutions": {
     "@typescript-eslint/utils": "^8.6.0"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.5.5",
+    "pinia": "^2.2.4"
   }
 }
