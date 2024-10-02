@@ -10,13 +10,11 @@ export default defineNuxtConfig({
     ['@pinia/nuxt', { autoImports: ['defineStore', 'acceptHMRUpdate'] }],
   ],
 
-  // experimental: {
-  // when using generate, payload js assets included in sw precache manifest
-  // but missing on offline, disabling extraction it until fixed
-  //   payloadExtraction: false,
-  //   renderJsonPayloads: true,
-  //   typedPages: true,
-  // },
+  experimental: {
+    payloadExtraction: false, //  如果你在生成時遇到 JavaScript 資產缺失的問題，建議保持關閉。這會防止在離線時出現問題。
+    renderJsonPayloads: true, // 如果你的應用需要將 JSON 資料渲染到頁面上，則可以開啟此選項。這對於需要 SEO 的應用特別有用。
+    typedPages: true, // 如果你使用 TypeScript 並希望在頁面中獲得類型檢查，則可以開啟此選項。
+  },
 
   nitro: {
     esbuild: {

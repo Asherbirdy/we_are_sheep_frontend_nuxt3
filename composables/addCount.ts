@@ -1,3 +1,3 @@
-export const useAddCount = () => {
+export function useAddCount() {
   return ref()
 }
