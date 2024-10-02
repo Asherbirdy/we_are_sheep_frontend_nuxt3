@@ -18,6 +18,7 @@
     "@nuxt/ui": "^2.18.5",
     "@pinia/nuxt": "^0.5.5",
     "@vite-pwa/nuxt": "^0.10.5",
+    "@vueuse/nuxt": "^11.1.0",
     "eslint": "^9.10.0",
     "eslint-plugin-format": "^0.1.2",
     "nuxt": "^3.13.2",
