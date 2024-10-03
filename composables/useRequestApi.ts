@@ -1,13 +1,8 @@
-import type { UseFetchOptions } from 'nuxt/app'
+import type { RuntimeConfig, UseRequestApiOptions } from '@/types'
 
-export function useRequestApi(
-  url: string | (() => string),
-  options: any,
-) {
-  const apiUrl = `https://enootebook-server.onrender.com/api/v1${url}`
-  const config = {
-    ...options,
-    $fetch: useNuxtApp().$customFetch,
-  }
-  return useFetch(apiUrl, config)
+export const useRequestApi = (url: string, options: UseRequestApiOptions) => {
+  const config: RuntimeConfig = useRuntimeConfig()
+  const apiUrl = `${config.public.apiUrl}${url}`
+  const fetchOptions = { ...options, $fetch: useNuxtApp().$customFetch }
+  return useFetch(apiUrl, fetchOptions)
 }

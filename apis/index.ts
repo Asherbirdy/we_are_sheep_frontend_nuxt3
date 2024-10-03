@@ -1,1 +1,1 @@
-export * from './useMockApi'
+export * from './useDevApi'

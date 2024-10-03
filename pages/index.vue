@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useMockApi } from '~/apis'
+import { useDevApi } from '~/apis'
 
-const { data } = await useMockApi.getImage()
-console.log(data.value)
+const { data } = await useDevApi.get()
 </script>
 
 <template>
