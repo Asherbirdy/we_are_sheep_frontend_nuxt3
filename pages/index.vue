@@ -2,6 +2,7 @@
 import { useDevApi } from '~/apis'
 
 const { data } = await useDevApi.get()
+console.log(data)
 </script>
 
 <template>
