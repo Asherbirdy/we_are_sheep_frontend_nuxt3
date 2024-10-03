@@ -6,7 +6,9 @@ useHead({
 })
 
 const colorMode = useColorMode()
-colorMode.preference = 'light'
+onMounted(() => {
+  colorMode.preference = 'light'
+})
 </script>
 
 <template>

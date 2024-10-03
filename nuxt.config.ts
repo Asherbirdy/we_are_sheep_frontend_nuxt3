@@ -1,9 +1,15 @@
+/* eslint-disable node/prefer-global/process */
 import { pwa } from './pwa'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
   compatibilityDate: '2024-10-02',
+  runtimeConfig: {
+    public: {
+      apiUrl: process.env.NUXT_PUBLIC_API_URL,
+    },
+  },
   nitro: {
     esbuild: {
       options: { target: 'esnext' },
