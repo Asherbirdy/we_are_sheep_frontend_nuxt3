@@ -1,8 +1,7 @@
-import type { RuntimeConfig, UseRequestApiOptions } from '@/types'
+import type { UseFetchOptions } from '#app'
+import type { RuntimeConfig } from '@/types'
 
-export const useRequestApi = (url: string, options: UseRequestApiOptions) => {
-  const config: RuntimeConfig = useRuntimeConfig()
-  const apiUrl = `${config.public.apiUrl}${url}`
-  const fetchOptions = { ...options, $fetch: useNuxtApp().$customFetch }
-  return useFetch(apiUrl, fetchOptions)
+export const useRequestApi = (url: string, options?: UseFetchOptions<any>) => {
+  const baseUrl = useRuntimeConfig().public.apiUrl
+  return useFetch(`${baseUrl}${url}`, { ...options, $fetch: useNuxtApp().$customFetch })
 }
