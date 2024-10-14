@@ -1,11 +1,14 @@
 <script setup lang='ts'>
+import { useAuthApi } from '@/apis'
+
 const state = ref({
-  email: '',
-  password: '',
+  email: 'dev@gmail.com',
+  password: 'password',
 })
 
-const handleSubmit = () => {
-  console.log(state.value)
+const handleSubmit = async () => {
+  const res = await useAuthApi.login(state.value)
+  console.log(res)
 }
 </script>
 
