@@ -6,9 +6,18 @@ const state = ref({
   password: 'password',
 })
 
-const handleSubmit = async () => {
-  const res = await useAuthApi.login(state.value)
-  console.log(res)
+const {
+  execute: handleLogin,
+  data,
+} = await useAuthApi.login(state.value)
+
+const onSubmit = async () => {
+  await handleLogin()
+  console.log(data.value)
+  const accessTokenCookie = useCookie('accessToken')
+  const refreshTokenJWTCookie = useCookie('refreshToken')
+  accessTokenCookie.value = data.value.token.accessTokenJWT
+  refreshTokenJWTCookie.value = data.value.token.refreshTokenJWT
 }
 </script>
 
@@ -28,7 +37,7 @@ const handleSubmit = async () => {
     >
     <button
       class="bg-blue-500 text-white p-2 rounded-md"
-      @click="handleSubmit"
+      @click="onSubmit"
     >
       login
     </button>
