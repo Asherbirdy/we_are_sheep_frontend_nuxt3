@@ -1,4 +1,4 @@
-import type { FetchContext } from 'ofetch'
+import { CookieEnums } from '@/enums'
 import type { RuntimeConfig } from '~/types'
 
 interface RefreshTokenResponse {
@@ -8,6 +8,7 @@ interface RefreshTokenResponse {
   }
 }
 
+// refresh the accessToken using the refreshToken
 const refreshAccessToken = async (refreshToken: string): Promise<string | null> => {
   try {
     const config: RuntimeConfig = useRuntimeConfig()
@@ -19,8 +20,8 @@ const refreshAccessToken = async (refreshToken: string): Promise<string | null> 
     })
 
     if (data && data.jwtAccessToken) {
-      const accessTokenCookie = useCookie('accessToken')
-      const refreshTokenJWTCookie = useCookie('refreshToken')
+      const accessTokenCookie = useCookie(CookieEnums.AccessToken)
+      const refreshTokenJWTCookie = useCookie(CookieEnums.RefreshToken)
       accessTokenCookie.value = data.jwtAccessToken.accessTokenJWT
       refreshTokenJWTCookie.value = data.jwtAccessToken.refreshTokenJWT
       return data.jwtAccessToken.accessTokenJWT
@@ -33,13 +34,15 @@ const refreshAccessToken = async (refreshToken: string): Promise<string | null> 
 }
 
 const getAuthHeaders = async () => {
-  const accessToken = useCookie('accessToken').value
-  const refreshToken = useCookie('refreshToken').value
+  const accessToken = useCookie(CookieEnums.AccessToken).value
+  const refreshToken = useCookie(CookieEnums.RefreshToken).value
 
+  // if accessToken is present, return it
   if (accessToken) {
     return { Authorization: `Bearer ${accessToken}` }
   }
 
+  // if refreshToken is present, refresh the accessToken
   if (refreshToken) {
     const newAccessToken = await refreshAccessToken(refreshToken)
     if (newAccessToken) {

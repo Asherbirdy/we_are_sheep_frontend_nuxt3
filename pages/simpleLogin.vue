@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { useAuthApi, useUserApi } from '@/apis'
+import { CookieEnums } from '@/enums'
 
 const state = ref({
   email: 'dev@gmail.com',
@@ -13,8 +14,8 @@ const {
 
 const onSubmit = async () => {
   await handleLogin()
-  const accessTokenCookie = useCookie('accessToken')
-  const refreshTokenJWTCookie = useCookie('refreshToken')
+  const accessTokenCookie = useCookie(CookieEnums.AccessToken)
+  const refreshTokenJWTCookie = useCookie(CookieEnums.RefreshToken)
   accessTokenCookie.value = data.value.token.accessTokenJWT
   refreshTokenJWTCookie.value = data.value.token.refreshTokenJWT
 }
