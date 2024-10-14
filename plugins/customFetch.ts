@@ -24,27 +24,16 @@ const refreshAccessToken = async (refreshToken: string) => {
 }
 export default defineNuxtPlugin(() => {
   const $Fetch = $fetch.create({
-    onRequest: (context: FetchContext | any) => {
-      let accessToken = useCookie('accessToken').value
-      const refreshToken = useCookie('refreshToken').value
+    onRequest: async (context: FetchContext | any) => {
 
-      if (!accessToken && refreshToken) {
-        refreshAccessToken(refreshToken)
-        accessToken = useCookie('accessToken').value
-      }
-
-      if (accessToken) {
-        context.options.headers = context.options.headers || {}
-        context.options.headers.Authorization = `Bearer ${accessToken}`
-      }
     },
-    // onResponse: ({ response }) => {
-
-    // },
     onResponseError({ response }) {
       console.error(`-\nSTATUSCODE: ${response.status}\nRESPONSE_DATA: ${response._data}\n-`)
-      // console.log(errorMessage, response)
       return Promise.reject(response)
+    },
+    onResponse({ response }: any) {
+      // console.log(response)
+      return response
     },
   })
 
