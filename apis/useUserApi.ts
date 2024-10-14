@@ -7,9 +7,6 @@ export const useUserApi = {
       server: false,
       immediate: false,
       lazy: true,
-      headers: {
-        Authorization: `Bearer ${useCookie('accessToken').value}`,
-      },
     })
   },
 }
