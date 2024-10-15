@@ -2,32 +2,29 @@
 import { useAuthApi, useUserApi } from '@/apis'
 import { CookieEnums } from '@/enums'
 
+const config = useRuntimeConfig()
 const state = ref({
-  email: 'dev@gmail.com',
-  password: 'password',
+  email: config.public.email,
+  password: config.public.password,
 })
 
 const {
   execute: handleLogin,
-  data,
+  data: loginResponse,
 } = await useAuthApi.login(state.value)
 
-const onSubmit = async () => {
+const onLogin = async () => {
   await handleLogin()
   const accessTokenCookie = useCookie(CookieEnums.AccessToken)
   const refreshTokenJWTCookie = useCookie(CookieEnums.RefreshToken)
-  accessTokenCookie.value = data.value.token.accessTokenJWT
-  refreshTokenJWTCookie.value = data.value.token.refreshTokenJWT
+  accessTokenCookie.value = loginResponse.value.token.accessTokenJWT
+  refreshTokenJWTCookie.value = loginResponse.value.token.refreshTokenJWT
 }
 
 const {
   execute: handleShowNonBindUser,
   data: nonBindUserData,
 } = await useUserApi.showNonBindUser()
-
-const onShowNonBindUser = async () => {
-  await handleShowNonBindUser()
-}
 </script>
 
 <template>
@@ -46,14 +43,14 @@ const onShowNonBindUser = async () => {
     >
     <button
       class="bg-blue-500 text-white p-2 rounded-md"
-      @click="onSubmit"
+      @click="onLogin"
     >
       login
     </button>
     <div>----分隔線----</div>
     <button
       class="bg-blue-500 text-white p-2 rounded-md"
-      @click="onShowNonBindUser"
+      @click="handleShowNonBindUser()"
     >
       showNonBindUser
     </button>
@@ -62,7 +59,3 @@ const onShowNonBindUser = async () => {
     </div>
   </div>
 </template>
-
-<style>
-
-</style>

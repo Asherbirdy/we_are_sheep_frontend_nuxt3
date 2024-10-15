@@ -9,6 +9,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiUrl: process.env.NUXT_PUBLIC_API_URL,
+      email: process.env.NUXT_EMAIL_TEST,
+      password: process.env.NUXT_PASSWORD_TEST,
     },
   },
   nitro: {
