@@ -11,14 +11,23 @@ const state = ref({
 const {
   execute: handleLogin,
   data: loginResponse,
+  error: loginError,
+  status: loginStatus,
 } = await useAuthApi.login(state.value)
 
 const onLogin = async () => {
   await handleLogin()
+  if (loginError.value) {
+    // eslint-disable-next-line no-alert
+    alert(loginError.value.message)
+    return
+  }
   const accessTokenCookie = useCookie(CookieEnums.AccessToken)
   const refreshTokenJWTCookie = useCookie(CookieEnums.RefreshToken)
-  accessTokenCookie.value = loginResponse.value.token.accessTokenJWT
-  refreshTokenJWTCookie.value = loginResponse.value.token.refreshTokenJWT
+  if (loginResponse.value) {
+    accessTokenCookie.value = loginResponse.value.token.accessTokenJWT
+    refreshTokenJWTCookie.value = loginResponse.value.token.refreshTokenJWT
+  }
 }
 
 const {
@@ -41,12 +50,13 @@ const {
       class="border border-gray-300 p-2 rounded-md"
       type="password"
     >
-    <button
+    <UButton
       class="bg-blue-500 text-white p-2 rounded-md"
+      :loading="loginStatus === 'pending'"
       @click="onLogin"
     >
       login
-    </button>
+    </UButton>
     <div>----分隔線----</div>
     <button
       class="bg-blue-500 text-white p-2 rounded-md"
