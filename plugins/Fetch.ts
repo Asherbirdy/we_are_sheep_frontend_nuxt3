@@ -59,7 +59,7 @@ export default defineNuxtPlugin(() => {
       const headers = await getAuthHeaders()
       options.headers = { ...options.headers, ...headers }
     },
-    onResponseError({ response }: any) {
+    onResponseError({ response }) {
       let errorMessage
       switch (response.status) {
         case 400:
@@ -84,7 +84,6 @@ export default defineNuxtPlugin(() => {
           errorMessage = '[ Unknown Error ] 未知錯誤！'
       }
       console.error(errorMessage, response)
-      return response
     },
   })
 
