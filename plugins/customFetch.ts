@@ -60,8 +60,30 @@ export default defineNuxtPlugin(() => {
       options.headers = { ...options.headers, ...headers }
     },
     onResponseError({ response }) {
-      console.error(`-\nSTATUSCODE: ${response.status}\nRESPONSE_DATA: ${response._data}\n-`)
-      return Promise.reject(response)
+      let errorMessage
+      switch (response.status) {
+        case 400:
+          errorMessage = '[ Client Error: 400 ] 客戶端錯誤，請求格式或參數有誤！'
+          break
+        case 401:
+          errorMessage = '[ Client Error: 401 ] 身份認證未通過! 請重新登入！'
+          break
+        case 403:
+          errorMessage = '[ Client Error: 403 ] 用戶已獲得授權，但訪問被禁止！'
+          break
+        case 404:
+          errorMessage = '[ Client Error: 404 ] 找不到網頁 或 未知的請求！'
+          break
+        case 500:
+          errorMessage = '[ Server Error: 500 ] 伺服器錯誤！'
+          break
+        case 503:
+          errorMessage = '[ Server Error: 503 ] 服務器錯誤！'
+          break
+        default:
+          errorMessage = '[ Unknown Error ] 未知錯誤！'
+      }
+      console.error(errorMessage, response)
     },
   })
 
