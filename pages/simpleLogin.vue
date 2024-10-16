@@ -4,8 +4,8 @@ import { CookieEnums } from '@/enums'
 
 const config = useRuntimeConfig()
 const state = ref({
-  email: config.public.email,
-  password: config.public.password,
+  email: config.public.email || '',
+  password: config.public.password || '',
 })
 
 const {
@@ -19,7 +19,7 @@ const onLogin = async () => {
   await handleLogin()
   if (loginError.value) {
     // eslint-disable-next-line no-alert
-    alert(loginError.value.message)
+    alert(loginError.value.data.msg)
     return
   }
   const accessTokenCookie = useCookie(CookieEnums.AccessToken)
@@ -32,7 +32,7 @@ const onLogin = async () => {
 
 const {
   execute: handleShowNonBindUser,
-  data: nonBindUserData,
+  data: nonBindUserResponse,
 } = await useUserApi.showNonBindUser()
 </script>
 
@@ -65,7 +65,7 @@ const {
       showNonBindUser
     </button>
     <div>
-      {{ nonBindUserData }}
+      {{ nonBindUserResponse }}
     </div>
   </div>
 </template>

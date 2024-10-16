@@ -8,7 +8,8 @@ export const useAuthApi = {
       body: payload,
       immediate: false,
       server: false,
-      lazy: false,
+      lazy: true,
+      watch: false,
     })
   },
 }
