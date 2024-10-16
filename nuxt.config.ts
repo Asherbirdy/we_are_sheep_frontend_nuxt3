@@ -58,9 +58,6 @@ export default defineNuxtConfig({
       ],
     },
   },
-  plugins: [
-    { src: '@/plugins/customFetch.ts', mode: 'client' },
-  ],
   imports: {
     dirs: [
       '@/plugins/Fetch.ts',

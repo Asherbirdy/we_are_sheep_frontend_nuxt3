@@ -89,7 +89,7 @@ export default defineNuxtPlugin(() => {
 
   return {
     provide: {
-      customFetch: $Fetch,
+      Fetch: $Fetch,
     },
   }
 })

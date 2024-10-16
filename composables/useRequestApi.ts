@@ -1,7 +1,6 @@
 import type { UseFetchOptions } from '#app'
-import type { RuntimeConfig } from '@/types'
 
-export const useRequestApi = (url: string, options?: UseFetchOptions<any>) => {
+export const useRequestApi = <T>(url: string, options?: UseFetchOptions<T>) => {
   const baseUrl = useRuntimeConfig().public.apiUrl
-  return useFetch(`${baseUrl}${url}`, { ...options, $fetch: useNuxtApp().$customFetch })
+  return useFetch(`${baseUrl}${url}`, { ...options, $fetch: useNuxtApp().$Fetch })
 }
