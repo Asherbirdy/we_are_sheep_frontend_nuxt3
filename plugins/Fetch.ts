@@ -1,18 +1,16 @@
 import { CookieEnums } from '@/enums'
 import type { RuntimeConfig } from '~/types'
 
-interface RefreshTokenResponse {
-  jwtAccessToken: {
-    accessTokenJWT: string
-    refreshTokenJWT: string
-  }
-}
-
 // refresh the accessToken using the refreshToken
 const refreshAccessToken = async (refreshToken: string): Promise<string | null> => {
   try {
     const config: RuntimeConfig = useRuntimeConfig()
-    const data = await $fetch<RefreshTokenResponse>(`${config.public.apiUrl}/auth/refreshToken`, {
+    const data = await $fetch<{
+      jwtAccessToken: {
+        accessTokenJWT: string
+        refreshTokenJWT: string
+      }
+    }>(`${config.public.apiUrl}/auth/refreshToken`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${refreshToken}`,
