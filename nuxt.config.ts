@@ -63,4 +63,7 @@ export default defineNuxtConfig({
       '@/plugins/Fetch.ts',
     ],
   },
+  typescript: {
+    typeCheck: true,
+  },
 })
