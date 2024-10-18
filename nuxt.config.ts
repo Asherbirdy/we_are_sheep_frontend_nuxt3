@@ -3,11 +3,14 @@ import { pwa } from './pwa'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  ssr: true,
   devtools: { enabled: true },
   compatibilityDate: '2024-10-02',
   runtimeConfig: {
     public: {
       apiUrl: process.env.NUXT_PUBLIC_API_URL,
+      email: process.env.NUXT_EMAIL_TEST,
+      password: process.env.NUXT_PASSWORD_TEST,
     },
   },
   nitro: {
@@ -54,5 +57,13 @@ export default defineNuxtConfig({
         { name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#222222' },
       ],
     },
+  },
+  imports: {
+    dirs: [
+      '@/plugins/Fetch.ts',
+    ],
+  },
+  typescript: {
+    typeCheck: true,
   },
 })
