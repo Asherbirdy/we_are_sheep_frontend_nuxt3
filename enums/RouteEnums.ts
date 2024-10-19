@@ -6,5 +6,6 @@ export enum PublicRoutes {
 
 export enum AdminRoutes {
   Home = '/admin',
+  Member = '/admin/member',
   LifeBibleBlog = '/admin/lifeBibleBlog',
 }

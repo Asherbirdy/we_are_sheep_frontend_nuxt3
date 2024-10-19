@@ -13,12 +13,12 @@ const closeMenu = () => {
 
 const links = [
   {
-    label: 'main',
+    label: '個人中心',
     to: AdminRoutes.Home,
   },
   {
-    label: 'Life Bible Blog',
-    to: AdminRoutes.LifeBibleBlog,
+    label: '會員管理',
+    to: AdminRoutes.Member,
   },
 ]
 </script>
