@@ -25,7 +25,7 @@ const links = [
 
 <template>
   <div class="flex">
-    <nav class="w-1/4 p-4 h-screen hidden md:block">
+    <nav class="w-1/6 p-4 h-screen hidden md:block">
       <h1 class="">
         LOGO
       </h1>
