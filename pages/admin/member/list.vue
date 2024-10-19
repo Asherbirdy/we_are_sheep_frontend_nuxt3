@@ -1,5 +1,5 @@
-<script setup lang="ts">
-// 會員列表的邏輯
+<script setup lang='ts'>
+
 </script>
 
 <template>
@@ -8,3 +8,7 @@
     <!-- 會員列表的內容 -->
   </div>
 </template>
+
+<style>
+
+</style>

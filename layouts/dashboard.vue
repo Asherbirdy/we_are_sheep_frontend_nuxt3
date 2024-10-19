@@ -18,7 +18,7 @@ const links = [
   },
   {
     label: '會員管理',
-    to: AdminRoutes.Member,
+    to: AdminRoutes.MemberList,
   },
 ]
 </script>
