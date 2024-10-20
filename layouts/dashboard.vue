@@ -64,7 +64,6 @@ const links = [
               <span class="group-hover:text-primary relative">{{ link.label }}</span>
             </template>
           </UVerticalNavigation>
-          <Placeholder class="h-48" />
         </div>
       </UModal>
       <UContainer>
