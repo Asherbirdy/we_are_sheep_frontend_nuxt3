@@ -5,5 +5,6 @@ export const useRequestApi = <DataT, ErrorT = any>(
   options?: UseFetchOptions<DataT>,
 ) => {
   const baseUrl = useRuntimeConfig().public.apiUrl
-  return useFetch<DataT, ErrorT>(`${baseUrl}${url}`, { ...options, $fetch: useNuxtApp().$Fetch } as any)
+  const fetch = useNuxtApp().$Fetch
+  return useFetch<DataT, ErrorT>(`${baseUrl}${url}`, { ...options, $fetch: fetch } as any)
 }
