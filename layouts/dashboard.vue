@@ -13,19 +13,19 @@ const closeMenu = () => {
 
 const links = [
   {
-    label: 'main',
+    label: '個人中心',
     to: AdminRoutes.Home,
   },
   {
-    label: 'Life Bible Blog',
-    to: AdminRoutes.LifeBibleBlog,
+    label: '會員管理',
+    to: AdminRoutes.MemberList,
   },
 ]
 </script>
 
 <template>
   <div class="flex">
-    <nav class="w-1/4 p-4 h-screen hidden md:block">
+    <nav class="w-1/6 p-4 h-screen hidden md:block">
       <h1 class="">
         LOGO
       </h1>
@@ -64,7 +64,6 @@ const links = [
               <span class="group-hover:text-primary relative">{{ link.label }}</span>
             </template>
           </UVerticalNavigation>
-          <Placeholder class="h-48" />
         </div>
       </UModal>
       <UContainer>
