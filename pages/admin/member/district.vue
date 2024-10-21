@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { useDistrictApi } from '@/apis'
+import CreateDistrictComponent from '~/components/apps/member/district/CreateDistrictBtnComponent.vue'
 import type { District } from '~/types'
 
 definePageMeta({
   layout: 'dashboard',
 })
 
-const { data: allDistrictsResponse } = useDistrictApi.getAll()
+const {
+  data: allDistrictsResponse,
+} = await useDistrictApi.getAll()
 
 const columns = [
   { key: '_id', label: 'ID' },
@@ -37,18 +40,23 @@ const items = (row: any) => [
 </script>
 
 <template>
-  <UTable
-    :rows="districtList"
-    :columns="columns"
-  >
-    <template #actions-data="{ row }">
-      <UDropdown :items="items(row)">
-        <UButton
-          color="gray"
-          variant="ghost"
-          icon="i-heroicons-ellipsis-horizontal-20-solid"
-        />
-      </UDropdown>
-    </template>
-  </UTable>
+  <div>
+    <div class="flex justify-end">
+      <CreateDistrictComponent />
+    </div>
+    <UTable
+      :rows="districtList"
+      :columns="columns"
+    >
+      <template #actions-data="{ row }">
+        <UDropdown :items="items(row)">
+          <UButton
+            color="gray"
+            variant="ghost"
+            icon="i-heroicons-ellipsis-horizontal-20-solid"
+          />
+        </UDropdown>
+      </template>
+    </UTable>
+  </div>
 </template>
