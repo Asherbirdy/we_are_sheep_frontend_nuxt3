@@ -43,9 +43,7 @@ const items = (row: any) => [
       :columns="columns"
     >
       <template #role-data="{ row }">
-        <span
-          style="white-space: normal; max-width: 200px;"
-        >
+        <span style="white-space: normal; max-width: 200px;">
           {{ row.role }}
         </span>
       </template>
