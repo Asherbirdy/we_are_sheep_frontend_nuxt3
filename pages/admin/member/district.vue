@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDistrictApi } from '@/apis'
-import CreateDistrictComponent from '~/components/apps/member/district/CreateDistrictBtnComponent.vue'
+import CreateDistrictBtnComponent from '~/components/apps/member/district/CreateDistrictBtnComponent.vue'
+import EditDistrictFormComponent from '~/components/apps/member/district/EditDistrictFormComponent.vue'
 import type { District } from '~/types'
 
 definePageMeta({
@@ -10,6 +11,11 @@ definePageMeta({
 const state = ref({
   modal: {
     edit: false,
+    district: {
+      _id: '',
+      name: '',
+      active: false,
+    },
   },
 })
 
@@ -32,13 +38,14 @@ const districtList = allDistrictsResponse.value?.districts.map(
   }),
 )
 
-const items = (row: any) => [
+const items = (row: District) => [
   [{
     label: 'Edit',
     icon: 'i-heroicons-pencil-square-20-solid',
 
     click: () => {
       state.value.modal.edit = true
+      state.value.modal.district = row
     },
   }, {
     label: 'Duplicate',
@@ -50,7 +57,7 @@ const items = (row: any) => [
 <template>
   <div>
     <div class="flex justify-end">
-      <CreateDistrictComponent />
+      <CreateDistrictBtnComponent />
     </div>
     <UTable
       :rows="districtList"
@@ -67,17 +74,7 @@ const items = (row: any) => [
       </template>
     </UTable>
     <UModal v-model="state.modal.edit">
-      <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
-        <template #header>
-          <Placeholder class="h-8" />
-        </template>
-
-        <Placeholder class="h-32" />
-
-        <template #footer>
-          <Placeholder class="h-8" />
-        </template>
-      </UCard>
+      <EditDistrictFormComponent :data="state.modal.district" />
     </UModal>
   </div>
 </template>
