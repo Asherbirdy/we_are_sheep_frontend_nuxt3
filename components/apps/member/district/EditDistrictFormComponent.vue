@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import type { District } from '@/types'
+import { useDistrictApi } from '@/apis'
 import { object, string } from 'yup'
 
 const props = defineProps<{
@@ -8,23 +9,32 @@ const props = defineProps<{
 
 const state = ref({
   data: {
+    _id: '',
     name: '',
+    active: false,
   },
 })
 
 const { data } = toRefs(props)
-onMounted(() => {
-  if (data.value) {
-    state.value.data.name = data.value.name
-  }
+
+const { execute, status } = await useDistrictApi.edit({
+  newName: data.value?.name ?? '',
+  districtId: data.value?._id ?? '',
 })
+
 const schema = object({
   name: string().required('請輸入區的名稱'),
 })
+
 const onSubmit = async () => {
-  // eslint-disable-next-line no-console
-  console.log(state.value.data)
+  await execute()
 }
+
+onMounted(() => {
+  if (data.value) {
+    state.value.data = data.value
+  }
+})
 </script>
 
 <template>
@@ -46,6 +56,7 @@ const onSubmit = async () => {
       </UFormGroup>
       <UButton
         type="submit"
+        :loading="status === 'pending'"
       >
         Submit
       </UButton>

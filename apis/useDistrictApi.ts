@@ -25,12 +25,19 @@ export const useDistrictApi = {
       },
     )
   },
-  edit: (data: any) => {
+  edit: (payload: {
+    newName: string
+    districtId: string
+  }) => {
     return useRequestApi(
       '/district',
       {
         method: 'PUT',
-        body: data,
+        body: payload,
+        immediate: false,
+        server: false,
+        lazy: false,
+        watch: false,
       },
     )
   },
