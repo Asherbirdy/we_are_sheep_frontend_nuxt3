@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '#ui/types'
+import { useDistrictApi } from '@/apis'
 import { type InferType, object, string } from 'yup'
+
+const toast = useToast()
 
 const state = ref({
   data: {
-    name: undefined,
+    name: '',
   },
   modal: false,
 })
+
+const {
+  execute: handleCreateDistrict,
+  data: createDistrictResponse,
+  error: createDistrictError,
+} = await useDistrictApi.create(state.value.data)
 
 const schema = object({
   name: string().required('請輸入區的名稱'),
@@ -16,6 +25,13 @@ const schema = object({
 async function onSubmit(e: FormSubmitEvent<InferType<typeof schema>>) {
   // eslint-disable-next-line no-console
   console.log(e.data)
+  await handleCreateDistrict()
+  if (createDistrictError?.value?.data.error === 'CREATE_ERROR') {
+    state.value.modal = false
+    toast.add({ title: createDistrictError.value.data.msg })
+    return
+  }
+  console.log(createDistrictResponse.value)
 }
 </script>
 

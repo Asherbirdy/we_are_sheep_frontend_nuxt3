@@ -16,4 +16,5 @@ onMounted(() => {
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <UNotifications />
 </template>

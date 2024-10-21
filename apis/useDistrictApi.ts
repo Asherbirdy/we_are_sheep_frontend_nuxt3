@@ -1,18 +1,22 @@
-import type { DistrictResponse } from '@/types'
+import type { DistrictCreateError, DistrictCreatePayload, DistrictCreateResponse, DistrictGetAllResponse } from '@/types'
 import { useRequestApi } from '~/composables/useRequestApi'
 
 export const useDistrictApi = {
   getAll: () => {
-    return useRequestApi<DistrictResponse>('/district', {
+    return useRequestApi<DistrictGetAllResponse>('/district', {
       method: 'GET',
       server: false,
       lazy: false,
     })
   },
-  create: (data: any) => {
-    return useRequestApi('/district', {
+  create: (payload: DistrictCreatePayload) => {
+    return useRequestApi<DistrictCreateResponse, DistrictCreateError>('/district', {
       method: 'POST',
-      body: data,
+      body: payload,
+      immediate: false,
+      server: false,
+      lazy: false,
+      watch: false,
     })
   },
   edit: (data: any) => {
