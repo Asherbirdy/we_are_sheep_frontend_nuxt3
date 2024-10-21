@@ -14,24 +14,20 @@ const state = ref({
 
 const {
   execute: handleCreateDistrict,
-  data: createDistrictResponse,
   error: createDistrictError,
+  status: createDistrictStatus,
 } = await useDistrictApi.create(state.value.data)
 
 const schema = object({
   name: string().required('請輸入區的名稱'),
 })
 
-async function onSubmit(e: FormSubmitEvent<InferType<typeof schema>>) {
-  // eslint-disable-next-line no-console
-  console.log(e.data)
+const onSubmit = async () => {
   await handleCreateDistrict()
   if (createDistrictError?.value?.data.error === 'CREATE_ERROR') {
     state.value.modal = false
     toast.add({ title: createDistrictError.value.data.msg })
-    return
   }
-  console.log(createDistrictResponse.value)
 }
 </script>
 
@@ -53,7 +49,10 @@ async function onSubmit(e: FormSubmitEvent<InferType<typeof schema>>) {
         >
           <UInput v-model="state.data.name" />
         </UFormGroup>
-        <UButton type="submit">
+        <UButton
+          type="submit"
+          :loading="createDistrictStatus === 'pending'"
+        >
           Submit
         </UButton>
       </UForm>
