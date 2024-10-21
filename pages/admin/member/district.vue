@@ -7,6 +7,12 @@ definePageMeta({
   layout: 'dashboard',
 })
 
+const state = ref({
+  modal: {
+    edit: false,
+  },
+})
+
 const {
   data: allDistrictsResponse,
 } = await useDistrictApi.getAll()
@@ -30,8 +36,10 @@ const items = (row: any) => [
   [{
     label: 'Edit',
     icon: 'i-heroicons-pencil-square-20-solid',
-    // eslint-disable-next-line no-console
-    click: () => console.log('Edit', row.id),
+
+    click: () => {
+      state.value.modal.edit = true
+    },
   }, {
     label: 'Duplicate',
     icon: 'i-heroicons-document-duplicate-20-solid',
@@ -58,5 +66,18 @@ const items = (row: any) => [
         </UDropdown>
       </template>
     </UTable>
+    <UModal v-model="state.modal.edit">
+      <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+        <template #header>
+          <Placeholder class="h-8" />
+        </template>
+
+        <Placeholder class="h-32" />
+
+        <template #footer>
+          <Placeholder class="h-8" />
+        </template>
+      </UCard>
+    </UModal>
   </div>
 </template>
