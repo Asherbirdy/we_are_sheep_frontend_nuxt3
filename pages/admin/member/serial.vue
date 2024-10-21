@@ -1,24 +1,17 @@
 <script setup lang="ts">
 import { useUserSerialNumberApi } from '@/apis'
+import CreateSerialBtnComponent from '@/components/apps/member/serial/CreateSerialBtnComponent.vue'
 import type { UserSerialNumberList } from '~/types'
 
 const { data: serialNumbers } = await useUserSerialNumberApi.getAll()
 
-const columns = [{
-  key: 'isUsed',
-  label: '狀態',
-}, {
-  key: 'districtId',
-  label: '區',
-}, {
-  key: 'role',
-  label: '權限',
-}, {
-  key: 'notes',
-  label: '備註',
-}, {
-  key: 'actions',
-}]
+const columns = [
+  { key: 'isUsed', label: '狀態' },
+  { key: 'districtId', label: '區' },
+  { key: 'role', label: '權限' },
+  { key: 'notes', label: '備註' },
+  { key: 'actions' },
+]
 
 const serialNumberList = serialNumbers.value?.userSerialNumber.map((
   serial: UserSerialNumberList,
@@ -34,21 +27,8 @@ const items = (row: any) => [
   [{
     label: 'Edit',
     icon: 'i-heroicons-pencil-square-20-solid',
+    // eslint-disable-next-line no-console
     click: () => console.log('Edit', row.id),
-  }, {
-    label: 'Duplicate',
-    icon: 'i-heroicons-document-duplicate-20-solid',
-  }],
-  [{
-    label: 'Archive',
-    icon: 'i-heroicons-archive-box-20-solid',
-  }, {
-    label: 'Move',
-    icon: 'i-heroicons-arrow-right-circle-20-solid',
-  }],
-  [{
-    label: 'Delete',
-    icon: 'i-heroicons-trash-20-solid',
   }],
 ]
 </script>
@@ -56,9 +36,7 @@ const items = (row: any) => [
 <template>
   <div>
     <div class="flex justify-end">
-      <UButton>
-        新增
-      </UButton>
+      <CreateSerialBtnComponent />
     </div>
     <UTable
       :rows="serialNumberList"
