@@ -1,9 +1,12 @@
+import type { DistrictResponse } from '@/types'
 import { useRequestApi } from '~/composables/useRequestApi'
 
 export const useDistrictApi = {
   getAll: () => {
-    return useRequestApi('/district', {
+    return useRequestApi<DistrictResponse>('/district', {
       method: 'GET',
+      server: false,
+      lazy: false,
     })
   },
   create: (data: any) => {

@@ -1,5 +1,6 @@
 // apis
 export * from './apis/AuthApiType'
+export * from './apis/DistrictApiType'
 export * from './apis/UserSerialNumberApiType'
 
 // apps
