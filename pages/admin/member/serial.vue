@@ -1,59 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useUserSerialNumberApi } from '@/apis'
+import type { UserSerialNumberList } from '~/types'
+
+const { data: serialNumbers } = await useUserSerialNumberApi.getAll()
 
 const columns = [{
-  key: 'name',
+  key: 'isUsed',
   label: '狀態',
 }, {
-  key: 'title',
+  key: 'districtId',
   label: '區',
 }, {
-  key: 'email',
+  key: 'role',
   label: '權限',
 }, {
-  key: 'role',
+  key: 'notes',
   label: '備註',
 }, {
   key: 'actions',
 }]
 
-const people = [{
-  id: 1,
-  name: 'Lindsay Walton',
-  title: 'Frontasdasdasdasasasasdassa-end Developer',
-  email: 'lindsay.walton@example.com',
-  role: 'Member',
-}, {
-  id: 2,
-  name: 'Courtney Henry',
-  title: 'Designer',
-  email: 'courtney.henry@example.com',
-  role: 'Admin',
-}, {
-  id: 3,
-  name: 'Tom Cook',
-  title: 'Director of Product',
-  email: 'tom.cook@example.com',
-  role: 'Member',
-}, {
-  id: 4,
-  name: 'Whitney Francis',
-  title: 'Copywriter',
-  email: 'whitney.francis@example.com',
-  role: 'Admin',
-}, {
-  id: 5,
-  name: 'Leonard Krasner',
-  title: 'Senior Designer',
-  email: 'leonard.krasner@example.com',
-  role: 'Owner',
-}, {
-  id: 6,
-  name: 'Floyd Miles',
-  title: 'Principal Designer',
-  email: 'floyd.miles milesmilesmile smilesm ile smilesmilesmil esmilesmilesmil esmile smilesm ilesmiles@exam ple.com',
-  role: 'Member',
-}]
+const serialNumberList = serialNumbers.value?.userSerialNumber.map((
+  serial: UserSerialNumberList,
+) => ({
+  id: serial._id,
+  isUsed: serial.isUsed ? '已使用' : '未使用',
+  districtId: serial.districtId?.name || '未指定',
+  role: serial.role || '未指定',
+  notes: serial.notes || '無備註',
+})) || []
 
 const items = (row: any) => [
   [{
@@ -86,22 +61,20 @@ const items = (row: any) => [
       </UButton>
     </div>
     <UTable
-      :rows="people"
+      :rows="serialNumberList"
       :columns="columns"
     >
-      <template #email-data="{ row }">
+      <template #role-data="{ row }">
         <span
           style="white-space: normal; max-width: 200px;"
-        >  <!-- {{ edit_2 }}: 修改限制长度的类 -->
-          {{ row.email }}
+        >
+          {{ row.role }}
         </span>
       </template>
 
-      <template #name-data="{ row }">
-        <span
-          class="truncate w-[100px] text-red-500"
-        >
-          {{ row.name }}
+      <template #isUsed-data="{ row }">
+        <span>
+          {{ row.isUsed }}
         </span>
       </template>
 

@@ -4,6 +4,9 @@ import { pwa } from './pwa'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
+  routeRules: {
+    '/admin/member/serial': { ssr: false },
+  },
   devtools: { enabled: true },
   compatibilityDate: '2024-10-02',
   runtimeConfig: {
