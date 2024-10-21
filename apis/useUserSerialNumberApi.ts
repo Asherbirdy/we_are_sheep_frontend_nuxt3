@@ -7,7 +7,7 @@ export const useUserSerialNumberApi = {
     return await useRequestApi<UserSerialNumberResponse>('/userSerialNumber/getAll', {
       method: 'GET',
       server: false,
-      lazy: true,
+      lazy: false,
       // key: '/userSerialNumber/getAll',
       // getCachedData(key) {
       //   return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
