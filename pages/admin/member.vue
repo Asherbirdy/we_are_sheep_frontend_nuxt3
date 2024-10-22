@@ -9,8 +9,11 @@ const links = [{
   label: '會員列表',
   to: AdminRoutes.MemberList,
 }, {
-  label: '序號管理',
+  label: '序號',
   to: AdminRoutes.MemberSerial,
+}, {
+  label: '區',
+  to: AdminRoutes.MemberDistrict,
 }]
 </script>
 
