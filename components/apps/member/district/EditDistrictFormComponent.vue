@@ -7,12 +7,14 @@ const props = defineProps<{
   data: District | null
 }>()
 
+const emit = defineEmits(['refresh'])
 const state = ref({
   data: {
     _id: '',
     name: '',
     active: false,
   },
+  buttonLoading: false,
 })
 
 const { data } = toRefs(props)
@@ -22,18 +24,18 @@ const schema = object({
 })
 
 const onSubmit = async () => {
-  const payload = {
+  state.value.buttonLoading = true
+  const { execute } = await useDistrictApi.edit({
     newName: state.value.data.name,
-    districtId: data.value?._id ?? '',
-  }
-  const { execute } = await useDistrictApi.edit(payload)
+    districtId: props.data?._id ?? '',
+  })
   await execute()
+  emit('refresh')
 }
 
 onMounted(() => {
   if (data.value) {
     state.value.data = data.value
-    console.log(state.value.data.name)
   }
 })
 </script>
@@ -57,6 +59,7 @@ onMounted(() => {
       </UFormGroup>
       <UButton
         type="submit"
+        :loading="state.buttonLoading"
       >
         Submit
       </UButton>

@@ -21,6 +21,7 @@ const state = ref({
 
 const {
   data: allDistrictsResponse,
+  refresh: refreshDistricts,
 } = await useDistrictApi.getAll()
 
 const columns = [
@@ -52,6 +53,11 @@ const items = (row: District) => [
     icon: 'i-heroicons-document-duplicate-20-solid',
   }],
 ]
+
+const handleRefresh = () => {
+  refreshDistricts()
+  state.value.modal.edit = false
+}
 </script>
 
 <template>
@@ -74,7 +80,10 @@ const items = (row: District) => [
       </template>
     </UTable>
     <UModal v-model="state.modal.edit">
-      <EditDistrictFormComponent :data="state.modal.district" />
+      <EditDistrictFormComponent
+        :data="state.modal.district"
+        @refresh="handleRefresh"
+      />
     </UModal>
   </div>
 </template>
