@@ -17,22 +17,23 @@ const state = ref({
 
 const { data } = toRefs(props)
 
-const { execute, status } = await useDistrictApi.edit({
-  newName: data.value?.name ?? '',
-  districtId: data.value?._id ?? '',
-})
-
 const schema = object({
   name: string().required('請輸入區的名稱'),
 })
 
 const onSubmit = async () => {
+  const payload = {
+    newName: state.value.data.name,
+    districtId: data.value?._id ?? '',
+  }
+  const { execute } = await useDistrictApi.edit(payload)
   await execute()
 }
 
 onMounted(() => {
   if (data.value) {
     state.value.data = data.value
+    console.log(state.value.data.name)
   }
 })
 </script>
@@ -56,7 +57,6 @@ onMounted(() => {
       </UFormGroup>
       <UButton
         type="submit"
-        :loading="status === 'pending'"
       >
         Submit
       </UButton>

@@ -10,4 +10,3 @@ export * from './apps/UserSerialNumberType'
 // common
 export * from './common/RequestType'
 export * from './common/Roles'
-export * from './common/RuntimeConfigType'

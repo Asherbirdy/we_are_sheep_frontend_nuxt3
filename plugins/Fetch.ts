@@ -1,10 +1,9 @@
 import { CookieEnums } from '@/enums'
-import type { RuntimeConfig } from '~/types'
 
 // refresh the accessToken using the refreshToken
 const refreshAccessToken = async (refreshToken: string): Promise<string | null> => {
   try {
-    const config: RuntimeConfig = useRuntimeConfig()
+    const config = useRuntimeConfig()
     const data = await $fetch<{
       jwtAccessToken: {
         accessTokenJWT: string
