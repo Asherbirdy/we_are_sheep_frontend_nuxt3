@@ -1,11 +1,16 @@
 import type { DistrictCreateError, DistrictCreatePayload, DistrictCreateResponse, DistrictGetAllResponse } from '@/types'
 import { useRequestApi } from '~/composables/useRequestApi'
 
+export enum DistrictApiKey {
+  getAll = 'district-getAll',
+}
+
 export const useDistrictApi = {
   getAll: () => {
     return useRequestApi<DistrictGetAllResponse>(
       '/district',
       {
+        key: DistrictApiKey.getAll,
         method: 'GET',
         server: false,
         lazy: false,

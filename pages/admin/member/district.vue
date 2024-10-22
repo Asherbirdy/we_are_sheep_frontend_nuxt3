@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDistrictApi } from '@/apis'
+import { DistrictApiKey, useDistrictApi } from '@/apis'
 import CreateDistrictBtnComponent from '~/components/apps/member/district/CreateDistrictBtnComponent.vue'
 import EditDistrictFormComponent from '~/components/apps/member/district/EditDistrictFormComponent.vue'
 import type { District } from '~/types'
@@ -21,7 +21,6 @@ const state = ref({
 
 const {
   data: allDistrictsResponse,
-  refresh: refreshDistricts,
 } = await useDistrictApi.getAll()
 
 const columns = [
@@ -57,7 +56,7 @@ const items = (row: District) => [
 ]
 
 const handleRefresh = () => {
-  refreshDistricts()
+  refreshNuxtData(DistrictApiKey.getAll)
   state.value.modal.edit = false
 }
 </script>
@@ -66,7 +65,7 @@ const handleRefresh = () => {
   <div>
     <div class="flex justify-end">
       <CreateDistrictBtnComponent
-        @refresh="refreshDistricts"
+        @refresh="handleRefresh"
       />
     </div>
     <UTable

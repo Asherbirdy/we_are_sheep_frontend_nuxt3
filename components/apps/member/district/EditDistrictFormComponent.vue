@@ -17,6 +17,7 @@ const state = ref({
   },
 })
 
+// 避免修改資料背景table的資料也在動
 const localData = computed(() => {
   return props.data ? { ...props.data } : { _id: '', name: '', active: false }
 })
@@ -27,11 +28,12 @@ const schema = object({
 
 const onSubmit = async () => {
   state.value.button.edit.loading = true
-  const { execute } = await useDistrictApi.edit({
+
+  await useDistrictApi.edit({
     newName: localData.value.name,
     districtId: localData.value._id,
-  })
-  await execute()
+  }).execute()
+
   state.value.button.edit.loading = false
   emit('refresh')
 }
