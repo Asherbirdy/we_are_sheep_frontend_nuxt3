@@ -3,6 +3,8 @@ import type { FormSubmitEvent } from '#ui/types'
 import { useDistrictApi } from '@/apis'
 import { type InferType, object, string } from 'yup'
 
+const emit = defineEmits(['refresh'])
+
 const toast = useToast()
 
 const state = ref({
@@ -28,6 +30,8 @@ const onSubmit = async () => {
     state.value.modal = false
     toast.add({ title: createDistrictError.value.data.msg })
   }
+  emit('refresh')
+  state.value.modal = false
 }
 </script>
 

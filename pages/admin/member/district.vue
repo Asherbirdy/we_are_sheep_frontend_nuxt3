@@ -31,12 +31,14 @@ const columns = [
   { key: 'actions' },
 ]
 
-const districtList = allDistrictsResponse.value?.districts.map(
-  (district: District) => ({
-    _id: district._id,
-    name: district.name,
-    active: district.active ? '啟用' : '停用',
-  }),
+const districtList = computed(() =>
+  allDistrictsResponse.value?.districts.map(
+    (district: District) => ({
+      _id: district._id,
+      name: district.name,
+      active: district.active ? '啟用' : '停用',
+    }),
+  ) || [],
 )
 
 const items = (row: District) => [
@@ -63,7 +65,9 @@ const handleRefresh = () => {
 <template>
   <div>
     <div class="flex justify-end">
-      <CreateDistrictBtnComponent />
+      <CreateDistrictBtnComponent
+        @refresh="refreshDistricts"
+      />
     </div>
     <UTable
       :rows="districtList"
@@ -79,7 +83,10 @@ const handleRefresh = () => {
         </UDropdown>
       </template>
     </UTable>
-    <UModal v-model="state.modal.edit">
+    <UModal
+      v-model="state.modal.edit"
+      prevent-close
+    >
       <EditDistrictFormComponent
         :data="state.modal.district"
         @refresh="handleRefresh"

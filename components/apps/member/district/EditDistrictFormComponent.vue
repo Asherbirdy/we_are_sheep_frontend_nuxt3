@@ -8,46 +8,54 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['refresh'])
+
 const state = ref({
-  data: {
-    _id: '',
-    name: '',
-    active: false,
+  button: {
+    edit: {
+      loading: false,
+    },
   },
-  buttonLoading: false,
 })
 
-const { data } = toRefs(props)
+const localData = computed(() => {
+  return props.data ? { ...props.data } : { _id: '', name: '', active: false }
+})
 
 const schema = object({
   name: string().required('請輸入區的名稱'),
 })
 
 const onSubmit = async () => {
-  state.value.buttonLoading = true
+  state.value.button.edit.loading = true
   const { execute } = await useDistrictApi.edit({
-    newName: state.value.data.name,
-    districtId: props.data?._id ?? '',
+    newName: localData.value.name,
+    districtId: localData.value._id,
   })
   await execute()
+  state.value.button.edit.loading = false
   emit('refresh')
 }
-
-onMounted(() => {
-  if (data.value) {
-    state.value.data = data.value
-  }
-})
 </script>
 
 <template>
   <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
     <template #header>
-      <div>編輯區域</div>
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+          編輯區域
+        </h3>
+        <UButton
+          color="gray"
+          variant="ghost"
+          icon="i-heroicons-x-mark-20-solid"
+          class="-my-1"
+          @click="$emit('refresh')"
+        />
+      </div>
     </template>
     <UForm
       :schema="schema"
-      :state="state.data"
+      :state="localData"
       class="space-y-4"
       @submit="onSubmit"
     >
@@ -55,11 +63,11 @@ onMounted(() => {
         label="名稱"
         name="name"
       >
-        <UInput v-model="state.data.name" />
+        <UInput v-model="localData.name" />
       </UFormGroup>
       <UButton
         type="submit"
-        :loading="state.buttonLoading"
+        :loading="state.button.edit.loading"
       >
         Submit
       </UButton>
