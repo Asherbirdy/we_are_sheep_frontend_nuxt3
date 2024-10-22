@@ -46,20 +46,20 @@ export const useDistrictApi = {
       },
     )
   },
-  close: () => {
-    return useRequestApi(
-      '/district/close',
-      {
-        method: 'PUT',
-      },
-    )
-  },
-  open: () => {
-    return useRequestApi(
-      '/district/open',
-      {
-        method: 'PUT',
-      },
-    )
-  },
+  // close: () => {
+  //   return useRequestApi(
+  //     '/district/close',
+  //     {
+  //       method: 'PUT',
+  //     },
+  //   )
+  // },
+  // open: () => {
+  //   return useRequestApi(
+  //     '/district/open',
+  //     {
+  //       method: 'PUT',
+  //     },
+  //   )
+  // },
 }
