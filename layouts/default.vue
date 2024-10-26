@@ -106,9 +106,7 @@ const links = [
 <template>
   <div class="flex flex-col min-h-screen">
     <header class="bg-gray-100 p-4 flex justify-between">
-      <div>
-        LOGO
-      </div>
+      <div>LOGO</div>
       <div class="hidden md:block">
         <nav class="flex space-x-4">
           <NuxtLink
@@ -125,7 +123,9 @@ const links = [
     <main class="flex-grow mx-2">
       <slot />
     </main>
-    <nav class="block md:hidden fixed bottom-0 left-0 right-0 bg-gray-100 shadow-lg">
+    <nav
+      class="fixed bottom-0 left-0 right-0 bg-gray-100 shadow-lg none md:hidden"
+    >
       <div class="grid grid-cols-3 h-16">
         <div
           v-for="route in routes"
@@ -142,6 +142,7 @@ const links = [
         </div>
       </div>
     </nav>
+
     <div class="relative z-10">
       <UModal v-model="isOpen">
         <div class="flex">
@@ -245,9 +246,9 @@ const links = [
           </UForm>
         </div>
       </UModal>
-      <h2>會員中心</h2>
+      <!-- <h2>會員中心</h2> -->
     </div>
-    <footer class="bg-gray-100 p-4">
+    <footer class="bg-gray-100 p-4 mt-16">
       <div class="text-center">
         Footer
       </div>
@@ -280,12 +281,7 @@ const links = [
   height: 2px; /* 控制底線的寬度 */
   background-color: black; /* 底線顏色 */
 }
-nav{
+nav {
   background-color: palegreen;
 }
-footer{
-  height: 60vh;
-  background-color: olive;
-}
 </style>
-
