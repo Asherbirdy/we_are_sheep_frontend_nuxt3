@@ -1,8 +1,13 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from '#ui/types'
+import { useAuthApi } from '@/apis'
 import { PublicRoutes } from '@/enums'
 import { reactive, ref } from 'vue'
 import { type InferType, object, string } from 'yup'
+
+const {
+  execute, // 一個可以用來刷新handler函數傳回的資料的函數。
+} = await useAuthApi.login()
 
 // 定義導航路由
 const routes = [
@@ -67,8 +72,9 @@ const showRegister = () => {
 }
 
 // 登入表單提交處理函數
-const onSubmit = (event: FormSubmitEvent<LoginSchema>) => {
+const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
   // 登入邏輯
+  await execute()
   console.log('登入', event.data)
 }
 
@@ -101,6 +107,10 @@ const links = [
     to: '#register',
   },
 ]
+
+const LoginFun = () => {
+  execute()//  執行 execute
+}
 </script>
 
 <template>
@@ -166,7 +176,6 @@ const links = [
             :schema="loginSchema"
             :state="state"
             class="space-y-4"
-            @submit="onSubmit"
           >
             <UFormGroup
               label="Email"
@@ -188,7 +197,10 @@ const links = [
             </UFormGroup>
 
             <div class="flex justify-center">
-              <UButton type="submit">
+              <UButton
+                type="submit"
+                @click="onSubmit"
+              >
                 登入
               </UButton>
             </div>

@@ -1,3 +1,4 @@
+export * from './useAuthApi'
 export * from './useAuthTestApi'
 export * from './useDevApi'
 export * from './useTestApi'
