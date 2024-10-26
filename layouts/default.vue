@@ -5,10 +5,6 @@ import { PublicRoutes } from '@/enums'
 import { reactive, ref } from 'vue'
 import { type InferType, object, string } from 'yup'
 
-const {
-  execute, // 一個可以用來刷新handler函數傳回的資料的函數。
-} = await useAuthApi.login()
-
 // 定義導航路由
 const routes = [
   {
@@ -55,11 +51,15 @@ type LoginSchema = InferType<typeof loginSchema>
 type RegisterSchema = InferType<typeof registerSchema>
 
 // 表單狀態，包含 email、password 和 confirmPassword
-const state = reactive({
+const state = ref({
   email: '',
   password: '',
-  confirmPassword: '',
+  // confirmPassword: '',
 })
+
+const {
+  execute, // 一個可以用來刷新handler函數傳回的資料的函數。
+} = await useAuthApi.login(state.value) //  會傳state form 表單的值進 useAuthApi.ts
 
 // 切換到登入表單
 const showLogin = () => {
@@ -75,6 +75,9 @@ const showRegister = () => {
 const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
   // 登入邏輯
   await execute()
+  console.log(state.value.email)
+  console.log(state.value.password)
+
   console.log('登入', event.data)
 }
 
