@@ -1,9 +1,9 @@
-export interface AuthLoginPayload {
+export interface AuthLoginTestPayload {
   email: string
   password: string
 }
 
-export interface AuthLoginResponse {
+export interface AuthLoginTestResponse {
   user: {
     name: string
     userId: string
