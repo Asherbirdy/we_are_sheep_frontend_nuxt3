@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { useAuthApi, useUserApi } from '@/apis'
+import { useAuthTestApi, useUserApi } from '@/apis'
 import { CookieEnums } from '@/enums'
 
 const config = useRuntimeConfig()
@@ -13,7 +13,7 @@ const {
   data: loginResponse,
   error: loginError,
   status: loginStatus,
-} = await useAuthApi.login(state.value)
+} = await useAuthTestApi.login(state.value)
 
 const onLogin = async () => {
   await handleLogin()

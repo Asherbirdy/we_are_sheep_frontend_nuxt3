@@ -1,7 +1,7 @@
 import type { AuthLoginPayload, AuthLoginResponse } from '@/types'
 import { useRequestApi } from '@/composables/useRequestApi'
 
-export const useAuthApi = {
+export const useAuthTestApi = {
   login: async (payload: AuthLoginPayload) => {
     return await useRequestApi<AuthLoginResponse>('/auth/login', {
       method: 'POST',
