@@ -41,7 +41,7 @@ const registerSchema = object({
     .min(8, 'Must be at least 8 characters')
     .required('Required'),
   confirmPassword: string()
-    .oneOf([ref('password')], 'Passwords must match')
+    // .oneOf([ref('password')], 'Passwords must match')
     .required('Required'),
   serialNumber: string().required('Required'), // 新增序號的驗證規則
 })
@@ -50,16 +50,34 @@ const registerSchema = object({
 type LoginSchema = InferType<typeof loginSchema>
 type RegisterSchema = InferType<typeof registerSchema>
 
-// 表單狀態，包含 email、password 和 confirmPassword
-const state = ref({
-  email: '',
-  password: '',
+// 登入表單狀態，包含 email、password 和 confirmPassword
+const LoginState = ref({
+  email: 'asherbirder@gmail.com666',
+  password: 'password',
   // confirmPassword: '',
+})
+// 註冊表單狀態，包含 email、password 和 confirmPassword
+const RegisterState = ref({
+  name: '',
+  email: 'asherbirder@gmail.com666',
+  password: 'password',
+  confirmPassword: 'password',
+  serialNumber: '222',
 })
 
 const {
-  execute, // 一個可以用來刷新handler函數傳回的資料的函數。
-} = await useAuthApi.login(state.value) //  會傳state form 表單的值進 useAuthApi.ts
+  // execute, // 一個可以用來刷新handler函數傳回的資料的函數。
+  execute: loginExecute, // 一個可以用來刷新handler函數傳回的資料的函數。
+  error: loginError,
+  status: loginStatus,
+
+} = await useAuthApi.login(LoginState.value) //  會傳state form 表單的值進 useAuthApi.ts
+
+const {
+  execute: registerExecute, // 一個可以用來刷新handler函數傳回的資料的函數。
+  error: registerError,
+  status: registerStatus,
+} = await useAuthApi.register(RegisterState.value) //  會傳state form 表單的值進 useAuthApi.ts
 
 // 切換到登入表單
 const showLogin = () => {
@@ -74,17 +92,20 @@ const showRegister = () => {
 // 登入表單提交處理函數
 const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
   // 登入邏輯
-  await execute()
-  console.log(state.value.email)
-  console.log(state.value.password)
+  await loginExecute()
+  console.log(LoginState.value.email)
+  console.log(LoginState.value.password)
 
-  console.log('登入', event.data)
+  console.log('LoginState', event.data)
 }
 
 // 註冊表單提交處理函數
-const onRegister = (event: FormSubmitEvent<RegisterSchema>) => {
+const onRegister = async (event: FormSubmitEvent<RegisterSchema>) => {
   // 註冊邏輯
-  console.log('註冊', event.data)
+  await registerExecute()
+  console.log(RegisterState.value.email)
+  console.log(RegisterState.value.password)
+  console.log('RegisterState', event.data)
 }
 
 // 彈窗開關函數
@@ -110,10 +131,6 @@ const links = [
     to: '#register',
   },
 ]
-
-const LoginFun = () => {
-  execute()//  執行 execute
-}
 </script>
 
 <template>
@@ -177,14 +194,14 @@ const LoginFun = () => {
           <UForm
             v-if="isLogin"
             :schema="loginSchema"
-            :state="state"
+            :state="LoginState"
             class="space-y-4"
           >
             <UFormGroup
               label="Email"
               name="email"
             >
-              <UInput v-model="state.email" />
+              <UInput v-model="LoginState.email" />
               <!-- 綁定 email -->
             </UFormGroup>
 
@@ -193,7 +210,7 @@ const LoginFun = () => {
               name="password"
             >
               <UInput
-                v-model="state.password"
+                v-model="LoginState.password"
                 type="password"
               />
               <!-- 綁定密碼 -->
@@ -201,6 +218,7 @@ const LoginFun = () => {
 
             <div class="flex justify-center">
               <UButton
+                :loading="loginStatus === 'pending'"
                 type="submit"
                 @click="onSubmit"
               >
@@ -213,15 +231,22 @@ const LoginFun = () => {
           <UForm
             v-else
             :schema="registerSchema"
-            :state="state"
+            :state="RegisterState"
             class="space-y-4"
             @submit="onRegister"
           >
             <UFormGroup
+              label="Name"
+              name="name"
+            >
+              <UInput v-model="RegisterState.name" />
+              <!-- 綁定 email -->
+            </UFormGroup>
+            <UFormGroup
               label="Email"
               name="email"
             >
-              <UInput v-model="state.email" />
+              <UInput v-model="RegisterState.email" />
               <!-- 綁定 email -->
             </UFormGroup>
 
@@ -230,7 +255,7 @@ const LoginFun = () => {
               name="password"
             >
               <UInput
-                v-model="state.password"
+                v-model="RegisterState.password"
                 type="password"
               />
               <!-- 綁定密碼 -->
@@ -241,7 +266,7 @@ const LoginFun = () => {
               name="confirmPassword"
             >
               <UInput
-                v-model="state.confirmPassword"
+                v-model="RegisterState.confirmPassword"
                 type="password"
               />
               <!-- 綁定確認密碼 -->
@@ -250,11 +275,19 @@ const LoginFun = () => {
               label="序號"
               name="serialnumber"
             >
-              <UInput type="number" />
+              <UInput
+                v-model="RegisterState.serialNumber"
+                type="text"
+              />
+
               <!-- 綁定確認序號 -->
             </UFormGroup>
             <div class="flex justify-center">
-              <UButton type="submit">
+              <UButton
+                class="bg-blue-500 text-white p-2 rounded-md"
+                :loading="registerStatus === 'pending'"
+                type="submit"
+              >
                 註冊
               </UButton>
             </div>
