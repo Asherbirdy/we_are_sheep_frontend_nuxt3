@@ -1,4 +1,5 @@
 export * from './useAuthTestApi'
 export * from './useDevApi'
+export * from './useDistrictApi'
 export * from './useUserApi'
 export * from './useUserSerialNumberApi'

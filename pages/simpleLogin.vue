@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { useAuthTestApi, useUserApi } from '@/apis'
-import { CookieEnums } from '@/enums'
+import { AdminRoutes, CookieEnums } from '@/enums'
 
 const config = useRuntimeConfig()
 const state = ref({
@@ -27,6 +27,7 @@ const onLogin = async () => {
   if (loginResponse.value) {
     accessTokenCookie.value = loginResponse.value.token.accessTokenJWT
     refreshTokenJWTCookie.value = loginResponse.value.token.refreshTokenJWT
+    navigateTo(AdminRoutes.Home)
   }
 }
 
