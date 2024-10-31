@@ -1,26 +1,35 @@
 <script setup lang='ts'>
 import type { FormSubmitEvent } from '#ui/types'
 import { type InferType, object, string } from 'yup'
+import { useDistrictApi } from '~/apis'
 import type { Role } from '~/types'
 
 type Schema = InferType<typeof schema>
 
 const state = ref({
   data: {
+    districtId: '',
     email: undefined,
     password: undefined,
     role: 'user',
-    districtId: '',
     notes: '',
   },
   modal: false,
 })
+
+const { data: getDistrictResponse } = useDistrictApi.getAll()
+const districtOptions = computed(() => getDistrictResponse.value?.districts.map(district => ({
+  label: district.name,
+  value: district._id,
+})))
 
 const schema = object({
   email: string().email('Invalid email').required('Required'),
   password: string()
     .min(8, 'Must be at least 8 characters')
     .required('Required'),
+  role: string().required('Required'),
+  districtId: string().required('Required'),
 })
 
 const roleOptions: {
@@ -63,7 +72,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       <div>
         <UForm
           :schema="schema"
-          :state="state"
+          :state="state.data"
           class="space-y-4"
           @submit="onSubmit"
         >
@@ -90,6 +99,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             <UInputMenu
               v-model="state.data.role"
               :options="roleOptions"
+            />
+          </UFormGroup>
+          <UFormGroup
+            name="districtId"
+            label="District"
+          >
+            <UInputMenu
+              v-model="state.data.districtId"
+              :options="districtOptions"
             />
           </UFormGroup>
           <UButton type="submit">
