@@ -1,5 +1,5 @@
 // apis
-export * from './apis/AuthApiType'
+export * from './apis/AuthTestApiType'
 export * from './apis/DistrictApiType'
 export * from './apis/UserSerialNumberApiType'
 
