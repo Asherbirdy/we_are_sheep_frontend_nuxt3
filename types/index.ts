@@ -1,5 +1,6 @@
 // apis
 export * from './apis/AuthTestApiType'
+export * from './apis/DistrictApiType'
 export * from './apis/UserSerialNumberApiType'
 
 // apps
@@ -9,4 +10,3 @@ export * from './apps/UserSerialNumberType'
 // common
 export * from './common/RequestType'
 export * from './common/Roles'
-export * from './common/RuntimeConfigType'

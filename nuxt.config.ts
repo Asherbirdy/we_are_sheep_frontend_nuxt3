@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   ssr: true,
   routeRules: {
     '/admin/member/serial': { ssr: false },
+    '/admin/member/district': { ssr: false },
     '/login': { ssr: false },
   },
   devtools: { enabled: true },
