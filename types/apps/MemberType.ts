@@ -1,5 +1,5 @@
 export interface Member {
   _id: string
   name: string
-  meetingStatus: string
+  meetingStatus: 'A' | 'B' | 'C' | 'D' | 'E'
 }
