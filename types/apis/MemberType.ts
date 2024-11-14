@@ -1,17 +1,9 @@
 export interface GetDistrictMemberResponse {
   msg: string
-  members: Members
+  members: Member[]
 }
 
-export interface Members {
-  A: DistrictMember[]
-  B: DistrictMember[]
-  C: DistrictMember[]
-  D: DistrictMember[]
-  E: DistrictMember[]
-}
-
-export interface DistrictMember {
+export interface Member {
   _id: string
   name: string
   meetingStatus: string

@@ -1,45 +1,21 @@
 <!-- eslint-disable no-console -->
 <script setup lang="ts">
+import { useMemberApi } from '@/apis'
 import { ref } from 'vue'
 import { vDraggable } from 'vue-draggable-plus'
 
 definePageMeta({
   layout: 'dashboard',
 })
+const { data } = useMemberApi.getDistrictMember()
 
 const state = ref({
-  data: [
-    {
-      name: 'A',
-      list: [
-        {
-          name: 'Joao',
-          id: '1',
-        },
-        {
-          name: 'Jean',
-          id: '2',
-        },
-        {
-          name: 'Johanna',
-          id: '3',
-        },
-        {
-          name: 'Juan',
-          id: '4',
-        },
-      ],
-    },
-    {
-      name: 'B',
-      list: [
-        {
-          name: 'Joao',
-          id: '1',
-        },
-      ],
-    },
-  ],
+  data: [] as any,
+})
+
+watch(data, () => {
+  state.value.data = data.value
+  console.log(state.value.data)
 })
 
 function onUpdate(e: any) {
@@ -55,11 +31,12 @@ function onRemove(e: any) {
 
 <template>
   <div>
-    <div class="flex">
+    <div class="flex flex-col">
       <div
         v-for="(item, index) in state.data"
         :key="index"
       >
+        <h4>{{ item.name }}</h4>
         <section
           v-draggable="[
             item.list,
@@ -72,12 +49,12 @@ function onRemove(e: any) {
               onRemove,
             },
           ]"
-          class="flex flex-col gap-2 p-4 w-300px h-300px m-auto bg-gray-500/5 rounded overflow-auto"
+          class="flex flex-col gap-2 p-1 w-300px h-300px m-auto bg-gray-500/5 rounded overflow-auto"
         >
           <div
             v-for="card in item.list"
             :key="card.id"
-            class="h-30 bg-gray-500/5 rounded p-3"
+            class="h-30 bg-gray-500/5 rounded p-1"
           >
             {{ card.name }}
           </div>
