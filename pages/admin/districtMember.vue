@@ -1,160 +1,87 @@
-<!-- eslint-disable no-console -->
 <script setup lang="ts">
-import { useMemberApi } from '@/apis'
-import { useDraggable } from 'vue-draggable-plus'
-
-const { data } = useMemberApi.getDistrictMember()
+import { ref } from 'vue'
+import { vDraggable } from 'vue-draggable-plus'
 
 definePageMeta({
   layout: 'dashboard',
 })
 
-interface DraggableItem {
-  name: string
-  _id: string
-  meetingStatus: string
+const state = ref({
+  data: [
+    {
+      name: 'A',
+      list: [
+        {
+          name: 'Joao',
+          id: '1',
+        },
+        {
+          name: 'Jean',
+          id: '2',
+        },
+        {
+          name: 'Johanna',
+          id: '3',
+        },
+        {
+          name: 'Juan',
+          id: '4',
+        },
+      ],
+    },
+    {
+      name: 'B',
+      list: [
+        {
+          name: 'Joao',
+          id: '1',
+        },
+      ],
+    },
+  ],
+})
+
+function onUpdate(e: any) {
+  console.log('update', e.moved)
 }
-
-// List
-const listA = ref<DraggableItem[]>([])
-const listB = ref<DraggableItem[]>([])
-const listC = ref<DraggableItem[]>([])
-const listD = ref<DraggableItem[]>([])
-const listE = ref<DraggableItem[]>([])
-
-// Template Ref
-const listARef = ref<HTMLElement | null>(null)
-const listBRef = ref<HTMLElement | null>(null)
-const listCRef = ref<HTMLElement | null>(null)
-const listDRef = ref<HTMLElement | null>(null)
-const listERef = ref<HTMLElement | null>(null)
-
-const mapMembersToList = (members: DraggableItem[]) => members.map(member => ({
-  name: member.name,
-  id: member._id,
-  meetingStatus: member.meetingStatus,
-}))
-
-const groups = ['A', 'B', 'C', 'D', 'E']
-const lists = [listA, listB, listC, listD, listE]
-
-watch(data, (newData) => {
-  if (newData?.members) {
-    groups.forEach((group, index) => {
-      lists[index].value = mapMembersToList(
-        newData.members[group as keyof typeof newData.members],
-      ).map(member => ({
-        ...member,
-        _id: member.id,
-      }))
-    })
-  }
-}, { immediate: true })
-
-const draggableFunction = (
-  list: Ref<DraggableItem[]>,
-  templateRef: Ref<HTMLElement | null>,
-) => {
-  useDraggable(templateRef, list, {
-    animation: 150,
-    ghostClass: 'ghost',
-    group: 'people',
-    onUpdate: (evt) => {
-      console.log('Updated list1:', evt.newIndex, evt.oldIndex)
-    },
-    onAdd: (evt) => {
-      console.log('Added to list1:', evt.item)
-      list.value = list.value.map((item, index) => ({
-        ...item,
-        id: `list1-${index}`,
-      }))
-    },
-    onRemove: (evt) => {
-      console.log('Removed from list1:', evt.item)
-    },
-  })
+function onAdd(e: any) {
+  console.log('add', e)
 }
-
-// 建立拖曳功能
-draggableFunction(listA, listARef)
-draggableFunction(listB, listBRef)
-draggableFunction(listC, listCRef)
-draggableFunction(listD, listDRef)
-draggableFunction(listE, listERef)
+function onRemove(e: any) {
+  console.log('remove', e.removed)
+}
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
-    <div class="flex justify-between items-center">
-      <h3>District Member</h3>
-      <UButton type="primary">
-        Edit
-      </UButton>
+  <div>
+    <div class="flex">
+      <div
+        v-for="(item, index) in state.data"
+        :key="index"
+      >
+        <section
+          v-draggable="[
+            item.list,
+            {
+              animation: 150,
+              ghostClass: 'ghost',
+              group: 'people',
+              onUpdate,
+              onAdd,
+              onRemove,
+            },
+          ]"
+          class="flex flex-col gap-2 p-4 w-300px h-300px m-auto bg-gray-500/5 rounded overflow-auto"
+        >
+          <div
+            v-for="item in item.list"
+            :key="item.id"
+            class="h-30 bg-gray-500/5 rounded p-3"
+          >
+            {{ item.name }}
+          </div>
+        </section>
+      </div>
     </div>
-    <h4>A 組</h4>
-    <section
-      ref="listARef"
-      class="flex flex-wrap gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
-    >
-      <p
-        v-for="item in listA"
-        :key="item._id"
-        class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
-      >
-        {{ item.name }}
-      </p>
-    </section>
-    <h4>B 組</h4>
-    <section
-      ref="listBRef"
-      class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
-    >
-      <p
-        v-for="item in listB"
-        :key="item._id"
-        class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
-      >
-        {{ item.name }}
-      </p>
-    </section>
-    <h4>C 組</h4>
-    <section
-      ref="listCRef"
-      class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
-    >
-      <p
-        v-for="item in listC"
-        :key="item._id"
-        class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
-      >
-        {{ item.name }}
-      </p>
-    </section>
-    <h4>D 組</h4>
-    <section
-      ref="listDRef"
-      class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
-    >
-      <p
-        v-for="item in listD"
-        :key="item._id"
-        class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
-      >
-        {{ item.name }}
-      </p>
-    </section>
-    <h4>E 組</h4>
-    <section
-      ref="listERef"
-      class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
-    >
-      <p
-        v-for="item in listE"
-        :key="item._id"
-        class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
-      >
-        {{ item.name }}
-      </p>
-    </section>
   </div>
 </template>
