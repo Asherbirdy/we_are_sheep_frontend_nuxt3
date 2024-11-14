@@ -1,49 +1,44 @@
 <!-- eslint-disable no-console -->
 <script setup lang="ts">
-import type { GetDistrictMemberResponse } from '@/types'
+import type { Member } from '@/types'
 import { useMemberApi } from '@/apis'
-import { ref } from 'vue'
-
 import { vDraggable } from 'vue-draggable-plus'
-import { useRequestApi } from '~/composables/useRequestApi'
 
 definePageMeta({
   layout: 'dashboard',
 })
 const { data } = useMemberApi.getDistrictMember()
 
-const state = ref({
-  data: [] as any,
-})
-
-// Add this interface above the transformMembers function
-interface GroupedData {
-  [key: string]: {
-    name: string
-    list: {
-      name: string
-      id: string
-    }[]
-  }
+interface State {
+  data: GroupedData
 }
 
-const groupedFunc = (members: any) => {
+interface GroupedData {
+  [key: string]: { name: string, list: Member[] }
+}
+
+const state = ref<State>({
+  data: {},
+})
+
+// 將api 轉換成需要的格式
+const groupedFunc = (members: Member[]) => {
   const groupedData: GroupedData = {}
-  members.forEach((member: any) => {
-    const status = member.meetingStatus
-    groupedData[status] = {
-      name: status,
-      list: [...(groupedData[status]?.list || []), {
-        name: member.name,
-        id: member._id,
-      }],
+  members.forEach((member: Member) => {
+    const { meetingStatus } = member
+    groupedData[meetingStatus] = {
+      name: meetingStatus,
+      list: [...(groupedData[meetingStatus]?.list || []), member],
     }
   })
   return groupedData
 }
 
 watch(data, () => {
-  state.value.data = groupedFunc(data.value?.members)
+  if (data.value?.members) {
+    state.value.data = groupedFunc(data.value?.members)
+    console.log('state.value.data', state.value.data)
+  }
 })
 
 function onUpdate(e: any) {
@@ -81,7 +76,7 @@ function onRemove(e: any) {
         >
           <div
             v-for="card in item.list"
-            :key="card.id"
+            :key="card._id"
             class="h-30 bg-gray-500/5 rounded p-1"
           >
             {{ card.name }}
