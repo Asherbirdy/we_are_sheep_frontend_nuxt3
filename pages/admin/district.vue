@@ -11,23 +11,25 @@ definePageMeta({
 
 interface DraggableItem {
   name: string
-  id: string
+  _id: string
   meetingStatus: string
 }
 
+// List
 const listA = ref<DraggableItem[]>([])
 const listB = ref<DraggableItem[]>([])
 const listC = ref<DraggableItem[]>([])
 const listD = ref<DraggableItem[]>([])
 const listE = ref<DraggableItem[]>([])
 
+// Template Ref
 const listARef = ref<HTMLElement | null>(null)
 const listBRef = ref<HTMLElement | null>(null)
 const listCRef = ref<HTMLElement | null>(null)
 const listDRef = ref<HTMLElement | null>(null)
 const listERef = ref<HTMLElement | null>(null)
 
-const mapMembersToList = (members: any[]) => members.map(member => ({
+const mapMembersToList = (members: DraggableItem[]) => members.map(member => ({
   name: member.name,
   id: member._id,
   meetingStatus: member.meetingStatus,
@@ -85,7 +87,7 @@ draggableFunction(listE, listERef)
     >
       <p
         v-for="item in listA"
-        :key="item.id"
+        :key="item._id"
         class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
       >
         {{ item.name }}
@@ -98,7 +100,7 @@ draggableFunction(listE, listERef)
     >
       <p
         v-for="item in listB"
-        :key="item.id"
+        :key="item._id"
         class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
       >
         {{ item.name }}
