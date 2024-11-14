@@ -1,8 +1,11 @@
 <!-- eslint-disable no-console -->
 <script setup lang="ts">
+import type { GetDistrictMemberResponse } from '@/types'
 import { useMemberApi } from '@/apis'
 import { ref } from 'vue'
+
 import { vDraggable } from 'vue-draggable-plus'
+import { useRequestApi } from '~/composables/useRequestApi'
 
 definePageMeta({
   layout: 'dashboard',
@@ -13,9 +16,34 @@ const state = ref({
   data: [] as any,
 })
 
+// Add this interface above the transformMembers function
+interface GroupedData {
+  [key: string]: {
+    name: string
+    list: {
+      name: string
+      id: string
+    }[]
+  }
+}
+
+const groupedFunc = (members: any) => {
+  const groupedData: GroupedData = {}
+  members.forEach((member: any) => {
+    const status = member.meetingStatus
+    groupedData[status] = {
+      name: status,
+      list: [...(groupedData[status]?.list || []), {
+        name: member.name,
+        id: member._id,
+      }],
+    }
+  })
+  return groupedData
+}
+
 watch(data, () => {
-  state.value.data = data.value
-  console.log(state.value.data)
+  state.value.data = groupedFunc(data.value?.members)
 })
 
 function onUpdate(e: any) {
