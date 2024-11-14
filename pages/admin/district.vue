@@ -17,9 +17,15 @@ interface DraggableItem {
 
 const listA = ref<DraggableItem[]>([])
 const listB = ref<DraggableItem[]>([])
+const listC = ref<DraggableItem[]>([])
+const listD = ref<DraggableItem[]>([])
+const listE = ref<DraggableItem[]>([])
 
 const listARef = ref<HTMLElement | null>(null)
 const listBRef = ref<HTMLElement | null>(null)
+const listCRef = ref<HTMLElement | null>(null)
+const listDRef = ref<HTMLElement | null>(null)
+const listERef = ref<HTMLElement | null>(null)
 
 watch(data, (newData) => {
   if (newData?.members) {
@@ -30,6 +36,24 @@ watch(data, (newData) => {
     }))
 
     listB.value = newData.members.B.map(member => ({
+      name: member.name,
+      id: member._id,
+      meetingStatus: member.meetingStatus,
+    }))
+
+    listC.value = newData.members.C.map(member => ({
+      name: member.name,
+      id: member._id,
+      meetingStatus: member.meetingStatus,
+    }))
+
+    listD.value = newData.members.D.map(member => ({
+      name: member.name,
+      id: member._id,
+      meetingStatus: member.meetingStatus,
+    }))
+
+    listE.value = newData.members.E.map(member => ({
       name: member.name,
       id: member._id,
       meetingStatus: member.meetingStatus,
@@ -64,6 +88,9 @@ const draggableFunction = (
 // 建立拖曳功能
 draggableFunction(listA, listARef)
 draggableFunction(listB, listBRef)
+draggableFunction(listC, listCRef)
+draggableFunction(listD, listDRef)
+draggableFunction(listE, listERef)
 </script>
 
 <template>
@@ -88,6 +115,45 @@ draggableFunction(listB, listBRef)
     >
       <p
         v-for="item in listB"
+        :key="item.id"
+        class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
+      >
+        {{ item.name }}
+      </p>
+    </section>
+    <h1>C 組</h1>
+    <section
+      ref="listCRef"
+      class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
+    >
+      <p
+        v-for="item in listC"
+        :key="item.id"
+        class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
+      >
+        {{ item.name }}
+      </p>
+    </section>
+    <h1>D 組</h1>
+    <section
+      ref="listDRef"
+      class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
+    >
+      <p
+        v-for="item in listD"
+        :key="item.id"
+        class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
+      >
+        {{ item.name }}
+      </p>
+    </section>
+    <h1>E 組</h1>
+    <section
+      ref="listERef"
+      class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
+    >
+      <p
+        v-for="item in listE"
         :key="item.id"
         class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
       >
