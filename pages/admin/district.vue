@@ -113,7 +113,7 @@ draggableFunction(listE, listERef)
     >
       <p
         v-for="item in listC"
-        :key="item.id"
+        :key="item._id"
         class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
       >
         {{ item.name }}
@@ -126,7 +126,7 @@ draggableFunction(listE, listERef)
     >
       <p
         v-for="item in listD"
-        :key="item.id"
+        :key="item._id"
         class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
       >
         {{ item.name }}
@@ -139,7 +139,7 @@ draggableFunction(listE, listERef)
     >
       <p
         v-for="item in listE"
-        :key="item.id"
+        :key="item._id"
         class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
       >
         {{ item.name }}
