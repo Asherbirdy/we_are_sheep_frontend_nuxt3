@@ -5,8 +5,7 @@ import { pwa } from './pwa'
 export default defineNuxtConfig({
   ssr: true,
   routeRules: {
-    '/admin/member/serial': { ssr: false },
-    '/admin/member/district': { ssr: false },
+    '/admin/**': { ssr: false },
     '/login': { ssr: false },
   },
   devtools: { enabled: true },

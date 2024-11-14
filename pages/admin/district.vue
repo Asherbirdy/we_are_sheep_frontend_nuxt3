@@ -41,7 +41,12 @@ const lists = [listA, listB, listC, listD, listE]
 watch(data, (newData) => {
   if (newData?.members) {
     groups.forEach((group, index) => {
-      lists[index].value = mapMembersToList(newData.members[group])
+      lists[index].value = mapMembersToList(
+        newData.members[group as keyof typeof newData.members],
+      ).map(member => ({
+        ...member,
+        _id: member.id,
+      }))
     })
   }
 }, { immediate: true })
@@ -80,7 +85,13 @@ draggableFunction(listE, listERef)
 
 <template>
   <div class="flex flex-col gap-4">
-    <h1>A 組</h1>
+    <div class="flex justify-between items-center">
+      <h3>District Member</h3>
+      <UButton type="primary">
+        Edit
+      </UButton>
+    </div>
+    <h4>A 組</h4>
     <section
       ref="listARef"
       class="flex flex-wrap gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
@@ -93,7 +104,7 @@ draggableFunction(listE, listERef)
         {{ item.name }}
       </p>
     </section>
-    <h1>B 組</h1>
+    <h4>B 組</h4>
     <section
       ref="listBRef"
       class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
@@ -106,7 +117,7 @@ draggableFunction(listE, listERef)
         {{ item.name }}
       </p>
     </section>
-    <h1>C 組</h1>
+    <h4>C 組</h4>
     <section
       ref="listCRef"
       class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
@@ -119,7 +130,7 @@ draggableFunction(listE, listERef)
         {{ item.name }}
       </p>
     </section>
-    <h1>D 組</h1>
+    <h4>D 組</h4>
     <section
       ref="listDRef"
       class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
@@ -132,7 +143,7 @@ draggableFunction(listE, listERef)
         {{ item.name }}
       </p>
     </section>
-    <h1>E 組</h1>
+    <h4>E 組</h4>
     <section
       ref="listERef"
       class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
