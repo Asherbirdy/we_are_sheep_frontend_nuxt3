@@ -1,6 +1,9 @@
 <!-- eslint-disable no-console -->
 <script setup lang="ts">
+import { useMemberApi } from '@/apis'
 import { useDraggable } from 'vue-draggable-plus'
+
+const { data } = useMemberApi.getDistrictMember()
 
 definePageMeta({
   layout: 'dashboard',
@@ -9,49 +12,31 @@ definePageMeta({
 interface DraggableItem {
   name: string
   id: string
+  meetingStatus: string
 }
 
-const list1 = ref<DraggableItem[]>([
-  {
-    name: '王小明',
-    id: '1',
-  },
-  {
-    name: 'Jean',
-    id: '2',
-  },
-  {
-    name: 'Johanna',
-    id: '3',
-  },
-  {
-    name: 'Juan',
-    id: '4',
-  },
-  {
-    name: '王小明',
-    id: '5',
-  },
-  {
-    name: '王小明',
-    id: '6',
-  },
-  {
-    name: '王小明',
-    id: '7',
-  },
-])
-const list2 = ref<DraggableItem[]>(
-  list1.value.map(item => ({
-    name: `${item.name}-2`,
-    id: `${item.id}-2`,
-  })),
-)
+const listA = ref<DraggableItem[]>([])
+const listB = ref<DraggableItem[]>([])
+const listARef = ref<HTMLElement | null>(null)
+const listBRef = ref<HTMLElement | null>(null)
 
-const el1 = ref<HTMLElement | null>(null)
-const el2 = ref<HTMLElement | null>(null)
+watch(data, (newData) => {
+  if (newData?.members) {
+    listA.value = newData.members.A.map(member => ({
+      name: member.name,
+      id: member._id,
+      meetingStatus: member.meetingStatus,
+    }))
 
-useDraggable(el1, list1, {
+    listB.value = newData.members.B.map(member => ({
+      name: member.name,
+      id: member._id,
+      meetingStatus: member.meetingStatus,
+    }))
+  }
+}, { immediate: true })
+
+useDraggable(listARef, listA, {
   animation: 150,
   ghostClass: 'ghost',
   group: 'people',
@@ -60,7 +45,7 @@ useDraggable(el1, list1, {
   },
   onAdd: (evt) => {
     console.log('Added to list1:', evt.item)
-    list1.value = list1.value.map((item, index) => ({
+    listA.value = listA.value.map((item, index) => ({
       ...item,
       id: `list1-${index}`,
     }))
@@ -70,7 +55,7 @@ useDraggable(el1, list1, {
   },
 })
 
-useDraggable(el2, list2, {
+useDraggable(listBRef, listB, {
   animation: 150,
   ghostClass: 'ghost',
   group: 'people',
@@ -79,7 +64,7 @@ useDraggable(el2, list2, {
   },
   onAdd: (evt) => {
     console.log('Added to list2:', evt.item)
-    list2.value = list2.value.map((item, index) => ({
+    listB.value = listB.value.map((item, index) => ({
       ...item,
       id: `list2-${index}`,
     }))
@@ -92,26 +77,26 @@ useDraggable(el2, list2, {
 
 <template>
   <div class="flex flex-col gap-4">
-    <h1>A</h1>
+    <h1>A 組</h1>
     <section
-      ref="el1"
+      ref="listARef"
       class="flex flex-wrap gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
     >
       <p
-        v-for="item in list1"
+        v-for="item in listA"
         :key="item.id"
         class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
       >
         {{ item.name }}
       </p>
     </section>
-    <h1>B</h1>
+    <h1>B 組</h1>
     <section
-      ref="el2"
+      ref="listBRef"
       class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
     >
       <p
-        v-for="item in list2"
+        v-for="item in listB"
         :key="item.id"
         class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
       >
