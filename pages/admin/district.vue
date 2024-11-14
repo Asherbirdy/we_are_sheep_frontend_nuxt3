@@ -17,6 +17,7 @@ interface DraggableItem {
 
 const listA = ref<DraggableItem[]>([])
 const listB = ref<DraggableItem[]>([])
+
 const listARef = ref<HTMLElement | null>(null)
 const listBRef = ref<HTMLElement | null>(null)
 
@@ -36,43 +37,33 @@ watch(data, (newData) => {
   }
 }, { immediate: true })
 
-useDraggable(listARef, listA, {
-  animation: 150,
-  ghostClass: 'ghost',
-  group: 'people',
-  onUpdate: (evt) => {
-    console.log('Updated list1:', evt.newIndex, evt.oldIndex)
-  },
-  onAdd: (evt) => {
-    console.log('Added to list1:', evt.item)
-    listA.value = listA.value.map((item, index) => ({
-      ...item,
-      id: `list1-${index}`,
-    }))
-  },
-  onRemove: (evt) => {
-    console.log('Removed from list1:', evt.item)
-  },
-})
+const draggableFunction = (
+  list: Ref<DraggableItem[]>,
+  templateRef: Ref<HTMLElement | null>,
+) => {
+  useDraggable(templateRef, list, {
+    animation: 150,
+    ghostClass: 'ghost',
+    group: 'people',
+    onUpdate: (evt) => {
+      console.log('Updated list1:', evt.newIndex, evt.oldIndex)
+    },
+    onAdd: (evt) => {
+      console.log('Added to list1:', evt.item)
+      list.value = list.value.map((item, index) => ({
+        ...item,
+        id: `list1-${index}`,
+      }))
+    },
+    onRemove: (evt) => {
+      console.log('Removed from list1:', evt.item)
+    },
+  })
+}
 
-useDraggable(listBRef, listB, {
-  animation: 150,
-  ghostClass: 'ghost',
-  group: 'people',
-  onUpdate: (evt) => {
-    console.log('Updated list2:', evt.newIndex, evt.oldIndex)
-  },
-  onAdd: (evt) => {
-    console.log('Added to list2:', evt.item)
-    listB.value = listB.value.map((item, index) => ({
-      ...item,
-      id: `list2-${index}`,
-    }))
-  },
-  onRemove: (evt) => {
-    console.log('Removed from list2:', evt.item)
-  },
-})
+// 建立拖曳功能
+draggableFunction(listA, listARef)
+draggableFunction(listB, listBRef)
 </script>
 
 <template>
