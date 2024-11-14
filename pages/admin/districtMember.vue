@@ -1,3 +1,4 @@
+<!-- eslint-disable no-console -->
 <script setup lang="ts">
 import { ref } from 'vue'
 import { vDraggable } from 'vue-draggable-plus'
@@ -74,11 +75,11 @@ function onRemove(e: any) {
           class="flex flex-col gap-2 p-4 w-300px h-300px m-auto bg-gray-500/5 rounded overflow-auto"
         >
           <div
-            v-for="item in item.list"
-            :key="item.id"
+            v-for="card in item.list"
+            :key="card.id"
             class="h-30 bg-gray-500/5 rounded p-3"
           >
-            {{ item.name }}
+            {{ card.name }}
           </div>
         </section>
       </div>
