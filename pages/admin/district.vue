@@ -13,7 +13,7 @@ interface DraggableItem {
 
 const list1 = ref<DraggableItem[]>([
   {
-    name: 'Joao',
+    name: '王小明',
     id: '1',
   },
   {
@@ -27,6 +27,18 @@ const list1 = ref<DraggableItem[]>([
   {
     name: 'Juan',
     id: '4',
+  },
+  {
+    name: '王小明',
+    id: '5',
+  },
+  {
+    name: '王小明',
+    id: '6',
+  },
+  {
+    name: '王小明',
+    id: '7',
   },
 ])
 const list2 = ref<DraggableItem[]>(
@@ -80,9 +92,10 @@ useDraggable(el2, list2, {
 
 <template>
   <div class="flex flex-col gap-4">
+    <h1>A</h1>
     <section
       ref="el1"
-      class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
+      class="flex flex-wrap gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
     >
       <p
         v-for="item in list1"
@@ -92,18 +105,18 @@ useDraggable(el2, list2, {
         {{ item.name }}
       </p>
     </section>
-
+    <h1>B</h1>
     <section
       ref="el2"
-      class="flex flex-col gap-2 p-4 w-300px h-300px m-auto bg-gray-500/5 rounded overflow-auto"
+      class="flex gap-2 p-4 bg-gray-500/5 rounded overflow-auto"
     >
-      <div
+      <p
         v-for="item in list2"
         :key="item.id"
-        class="cursor-move h-30 bg-gray-500/5 rounded p-3"
+        class="cursor-move bg-gray-500/5 rounded p-1 text-sm"
       >
         {{ item.name }}
-      </div>
+      </p>
     </section>
   </div>
 </template>
