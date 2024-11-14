@@ -27,37 +27,20 @@ const listCRef = ref<HTMLElement | null>(null)
 const listDRef = ref<HTMLElement | null>(null)
 const listERef = ref<HTMLElement | null>(null)
 
+const mapMembersToList = (members: any[]) => members.map(member => ({
+  name: member.name,
+  id: member._id,
+  meetingStatus: member.meetingStatus,
+}))
+
+const groups = ['A', 'B', 'C', 'D', 'E']
+const lists = [listA, listB, listC, listD, listE]
+
 watch(data, (newData) => {
   if (newData?.members) {
-    listA.value = newData.members.A.map(member => ({
-      name: member.name,
-      id: member._id,
-      meetingStatus: member.meetingStatus,
-    }))
-
-    listB.value = newData.members.B.map(member => ({
-      name: member.name,
-      id: member._id,
-      meetingStatus: member.meetingStatus,
-    }))
-
-    listC.value = newData.members.C.map(member => ({
-      name: member.name,
-      id: member._id,
-      meetingStatus: member.meetingStatus,
-    }))
-
-    listD.value = newData.members.D.map(member => ({
-      name: member.name,
-      id: member._id,
-      meetingStatus: member.meetingStatus,
-    }))
-
-    listE.value = newData.members.E.map(member => ({
-      name: member.name,
-      id: member._id,
-      meetingStatus: member.meetingStatus,
-    }))
+    groups.forEach((group, index) => {
+      lists[index].value = mapMembersToList(newData.members[group])
+    })
   }
 }, { immediate: true })
 
