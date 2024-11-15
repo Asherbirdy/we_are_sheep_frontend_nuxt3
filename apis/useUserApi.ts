@@ -9,4 +9,14 @@ export const useUserApi = {
       lazy: true,
     })
   },
+  showAllUser: async () => {
+    return await useRequestApi('/users/getAllUsers', {
+      method: 'GET',
+      server: false,
+      immediate: false,
+      lazy: true,
+    })
+  },
 }
+
+// .env的處理被寫在useRequestApi
