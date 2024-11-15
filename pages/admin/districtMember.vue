@@ -1,21 +1,22 @@
 <script setup lang="ts">
-import type { GroupedData, Member, State } from '@/types'
+import type { MeetingStatus, Member, MemberDragData, State, TransformedToDraggableData } from '@/types'
 import { useMemberApi } from '@/apis'
-import { vDraggable } from 'vue-draggable-plus'
+import { type DraggableEvent, vDraggable } from 'vue-draggable-plus'
 
 definePageMeta({
   layout: 'dashboard',
 })
 
-const { data } = useMemberApi.getDistrictMember()
+const { data: handleGetDistrictMember } = useMemberApi.getDistrictMember()
 
 const state = ref<State>({
   data: {},
+  edited: [],
 })
 
 // 將api 轉換成需要的格式
-const groupedFunc = (members: Member[]): GroupedData => {
-  const groupedData: GroupedData = {}
+const groupedFunc = (members: Member[]): TransformedToDraggableData => {
+  const groupedData: TransformedToDraggableData = {}
   members.forEach((member: Member) => {
     const { meetingStatus } = member
     const existingList = groupedData[meetingStatus]?.list || []
@@ -28,25 +29,35 @@ const groupedFunc = (members: Member[]): GroupedData => {
   return groupedData
 }
 
-watch(data, () => {
-  if (data.value?.members) {
-    state.value.data = groupedFunc(data.value?.members)
+watch(handleGetDistrictMember, () => {
+  if (handleGetDistrictMember.value?.members) {
+    state.value.data = groupedFunc(handleGetDistrictMember.value?.members)
   }
 })
 
-const onAdd = (e: any) => {
-  console.log('add', e)
+const draggableAdd = (e: DraggableEvent) => {
+  const toStatus = e.to.previousElementSibling?.textContent?.trim() as MeetingStatus
+
+  const data: MemberDragData = {
+    _id: e.data._id,
+    name: e.data.name,
+    meetingStatus: toStatus,
+  }
+
+  state.value.edited.push(data as Member)
 }
 </script>
 
 <template>
   <div>
-    <div class="flex justify-between items-center">
-      <h4>District Member</h4>
-      <UButton color="primary">
-        Edit
-      </UButton>
-    </div>
+    <h4>District Member</h4>
+    <UButton
+      v-if="state.edited.length > 0"
+      color="primary"
+      block
+    >
+      更新名單
+    </UButton>
     <div class="flex flex-col">
       <div
         v-for="draggable in state.data"
@@ -60,7 +71,7 @@ const onAdd = (e: any) => {
               animation: 150,
               ghostClass: 'ghost',
               group: 'people',
-              onAdd,
+              onAdd: draggableAdd,
             },
           ]"
           class="flex flex-col gap-2 p-1 w-300px h-300px m-auto bg-gray-500/5 rounded overflow-auto"
