@@ -1,8 +1,8 @@
-import type { Member } from '../apps/MemberType'
+import type { Member, MemberDragData } from '../apps/MemberType'
 
 export interface GetDistrictMemberResponse {
   msg: string
-  members: Member[]
+  members: MemberDragData[]
 }
 
 export interface EditMemberStatusResponse {

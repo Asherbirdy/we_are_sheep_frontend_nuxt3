@@ -1,9 +1,4 @@
-export interface MemberDragData {
-  _id: string
-  name: string
-  meetingStatus: MeetingStatus
-}
-
+export type MeetingStatus = 'A' | 'B' | 'C' | 'D' | 'E'
 export interface Member {
   _id: string
   name: string
@@ -17,7 +12,7 @@ export interface Member {
   __v: number
 }
 
-export type MeetingStatus = 'A' | 'B' | 'C' | 'D' | 'E'
+export type MemberDragData = Pick<Member, '_id' | 'name' | 'meetingStatus'>
 
 export interface TransformedToDraggableData {
   [key: string]: {

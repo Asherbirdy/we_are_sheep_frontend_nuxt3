@@ -3,9 +3,7 @@ import type { MeetingStatus, Member, MemberDragData, State, TransformedToDraggab
 import { useMemberApi } from '@/apis'
 import { type DraggableEvent, vDraggable } from 'vue-draggable-plus'
 
-definePageMeta({
-  layout: 'dashboard',
-})
+definePageMeta({ layout: 'dashboard' })
 
 const { data: handleGetDistrictMember } = useMemberApi.getDistrictMember()
 
@@ -15,15 +13,15 @@ const state = ref<State>({
 })
 
 // 將api 轉換成需要的格式
-const groupedFunc = (members: Member[]): TransformedToDraggableData => {
+const groupedFunc = (members: MemberDragData[]): TransformedToDraggableData => {
   const groupedData: TransformedToDraggableData = {}
-  members.forEach((member: Member) => {
+  members.forEach((member: MemberDragData) => {
     const { meetingStatus } = member
     const existingList = groupedData[meetingStatus]?.list || []
 
     groupedData[meetingStatus] = {
       name: meetingStatus,
-      list: [...existingList, member],
+      list: [...existingList, member as Member],
     }
   })
   return groupedData
