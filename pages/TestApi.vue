@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { useTestApi, useUserApi } from '@/apis'
 
-const data = ref(null)
+// const data = ref(null)
 
 // 解構
-onMounted(async () => {
-  const { data } = await useUserApi.showAllUser()
-})
+const { data } = await useUserApi.showAllUser()
 </script>
 
 <template>

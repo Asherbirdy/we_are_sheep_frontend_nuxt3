@@ -10,11 +10,10 @@ export const useUserApi = {
     })
   },
   showAllUser: async () => {
-    return await useRequestApi('/users/getAllUsers', {
+    return useRequestApi('/users/getAllUsers', {
       method: 'GET',
       server: false,
-      immediate: false,
-      lazy: true,
+      
     })
   },
 }
