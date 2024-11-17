@@ -6,17 +6,17 @@ import { computed, reactive, ref, watch } from 'vue'
 //  定義表格
 const columns = [
   {
-    key: 'id',
+    key: '_id',
     label: 'ID',
   },
   {
     key: 'name',
     label: '名字',
   },
-  {
-    key: 'title',
-    label: '職稱',
-  },
+  // {
+  //   key: 'title',
+  //   label: '職稱',
+  // },
   {
     key: 'email',
     label: 'Email',
@@ -30,77 +30,15 @@ const columns = [
 
 //  成員明細
 
-const people = ref([{
-  id: 1,
-  name: '',
-  email: '',
-  role: '',
-}, {
-  id: 2,
-  name: '',
-  email: '',
-  role: '',
-}, {
-  id: 3,
-  name: '',
-  email: '',
-  role: '',
-}, {
-  id: 4,
-  name: 'JJJ',
-  email: '',
-  role: '',
-}, {
-  id: 5,
-  name: 'LLL',
-  email: '',
-  role: '',
-}, {
-  id: 6,
-  name: 'aaaa',
-  email: 'aaaaa',
-  role: '',
-}])
-
-const people2 = ref([{
-  id: 1,
-  name: '',
-  email: '',
-  role: '',
-}, {
-  id: 2,
-  name: '',
-  email: '',
-  role: '',
-}, {
-  id: 3,
-  name: '',
-  email: '',
-  role: '',
-}, {
-  id: 4,
-  name: 'JJJ',
-  email: '',
-  role: '',
-}, {
-  id: 5,
-  name: 'LLL',
-  email: '',
-  role: '',
-}, {
-  id: 6,
-  name: 'aaaa',
-  email: 'aaaaa',
-  role: '',
-}])
+const PeopleData = ref([])
 
 // 表單搜尋功能
 const q = ref('')
 const filteredRows = computed(() => {
   if (!q.value) {
-    return people
+    return PeopleData.value
   }
-  return people.value.filter((person) => {
+  return PeopleData.value.filter((person) => {
     return Object.values(person).some((value) => {
       return String(value).toLowerCase().includes(q.value.toLowerCase())
     })
@@ -120,11 +58,8 @@ const filteredRows = computed(() => {
 
 const { data } = await useUserApi.showAllUser()
 if (data.value) {
-  people2.value = data.value
+  PeopleData.value = data.value.users
 }
-
-console.log('222', people.value)
-console.log('555', people2)
 </script>
 
 <template>
@@ -144,10 +79,13 @@ console.log('555', people2)
       </div>
 
       <UTable
-        :rows="filteredRows"
+      
+        :rows="filteredRows"   
+        
 
         :columns="columns"
       />
+      <!--  -->
     </div>
   </div>
 </template>
