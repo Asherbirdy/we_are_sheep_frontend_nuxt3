@@ -6,12 +6,14 @@ import { computed, reactive, ref, watch } from 'vue'
 //  定義表格
 const columns = [
   {
-    key: 'id',
+    key: '_id',
     label: 'ID',
   },
   {
     key: 'name',
     label: '名字',
+    sortable: true,
+    sort: (a, b) => a.name.localeCompare(b.name),
   },
   {
     key: 'title',
@@ -30,75 +32,13 @@ const columns = [
 
 //  成員明細
 
-const people = ref([{
-  id: 1,
-  name: '',
-  email: '',
-  role: '',
-}, {
-  id: 2,
-  name: '',
-  email: '',
-  role: '',
-}, {
-  id: 3,
-  name: '',
-  email: '',
-  role: '',
-}, {
-  id: 4,
-  name: 'JJJ',
-  email: '',
-  role: '',
-}, {
-  id: 5,
-  name: 'LLL',
-  email: '',
-  role: '',
-}, {
-  id: 6,
-  name: 'aaaa',
-  email: 'aaaaa',
-  role: '',
-}])
-
-const people2 = ref([{
-  id: 1,
-  name: '',
-  email: '',
-  role: '',
-}, {
-  id: 2,
-  name: '',
-  email: '',
-  role: '',
-}, {
-  id: 3,
-  name: '',
-  email: '',
-  role: '',
-}, {
-  id: 4,
-  name: 'JJJ',
-  email: '',
-  role: '',
-}, {
-  id: 5,
-  name: 'LLL',
-  email: '',
-  role: '',
-}, {
-  id: 6,
-  name: 'aaaa',
-  email: 'aaaaa',
-  role: '',
-}])
+const people = ref([])
 
 // 表單搜尋功能
 const q = ref('')
 const filteredRows = computed(() => {
   if (!q.value) {
-    return people
+    return people.value
   }
   return people.value.filter((person) => {
     return Object.values(person).some((value) => {
@@ -120,11 +60,8 @@ const filteredRows = computed(() => {
 
 const { data } = await useUserApi.showAllUser()
 if (data.value) {
-  people2.value = data.value
+  people.value = data.value.users
 }
-
-console.log('222', people.value)
-console.log('555', people2)
 </script>
 
 <template>
@@ -145,7 +82,6 @@ console.log('555', people2)
 
       <UTable
         :rows="filteredRows"
-
         :columns="columns"
       />
     </div>
