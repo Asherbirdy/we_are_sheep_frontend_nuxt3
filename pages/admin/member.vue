@@ -27,5 +27,6 @@ const links = [{
       </template>
     </UHorizontalNavigation>
     <NuxtPage />
+    <h2>77777777</h2>
   </div>
 </template>
