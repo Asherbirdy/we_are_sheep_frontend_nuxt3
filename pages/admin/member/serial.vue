@@ -5,13 +5,13 @@ import type { UserSerialNumberList } from '~/types'
 
 const { data: serialNumbers } = await useUserSerialNumberApi.getAll()
 
-const columns = [
-  { key: 'isUsed', label: '狀態' },
-  { key: 'districtId', label: '區' },
-  { key: 'role', label: '權限' },
-  { key: 'notes', label: '備註' },
-  { key: 'actions' },
-]
+// const columns = [
+//   { key: 'isUsed', label: '狀態' },
+//   { key: 'districtId', label: '區' },
+//   { key: 'role', label: '權限' },
+//   { key: 'notes', label: '備註' },
+//   { key: 'actions' },
+// ]
 
 const serialNumberList = serialNumbers.value?.userSerialNumber.map((
   serial: UserSerialNumberList,
