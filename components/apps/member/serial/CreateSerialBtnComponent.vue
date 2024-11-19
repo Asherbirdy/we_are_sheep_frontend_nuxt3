@@ -2,7 +2,7 @@
 import type { FormSubmitEvent } from '#ui/types'
 import { ref } from 'vue'
 import { type InferType, object, string } from 'yup'
-import { useDistrictApi } from '~/apis'
+import { useUserSerialNumberApi } from '~/apis'
 import type { Role } from '~/types'
 
 //  輸入區ID
@@ -65,9 +65,14 @@ const schema = object({
 type Schema = InferType<typeof schema>
 
 const state = ref({
-  Role: '',
-  districtId: '',
-  notes: 'test',
+  data: {
+    districtId: '',
+    email: undefined,
+    password: undefined,
+    role: 'user',
+    notes: '',
+  },
+  modal: false,
 })
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
@@ -80,10 +85,7 @@ const {
   data: districtIdResponse,
   error: districtIdError,
   status: districtIdStatus,
-} = await useDistrictApi.create()
-
-
-
+} = await useUserSerialNumberApi.getAll()
 </script>
 
 <template>
