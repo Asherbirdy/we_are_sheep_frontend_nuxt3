@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useUserApi } from '@/apis'
+import { useMemberStore } from '@/store/UserStatus'
 import { idText } from 'typescript'
 
 import { computed, reactive, ref, watch } from 'vue'
@@ -60,6 +61,19 @@ const { data } = await useUserApi.showAllUser()
 if (data.value) {
   PeopleData.value = data.value.users
 }
+
+// ------------------------
+
+// 存會員狀態
+
+const store = useMemberStore()
+
+console.log('Pinia', store)
+
+onMounted(async () => {
+  await store.getMemberStatus()
+  console.log('取會員資料', data.value)
+})
 </script>
 
 <template>
@@ -79,9 +93,8 @@ if (data.value) {
       </div>
 
       <UTable
-      
-        :rows="filteredRows"   
-        
+
+        :rows="filteredRows"
 
         :columns="columns"
       />
