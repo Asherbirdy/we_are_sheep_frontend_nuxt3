@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import type { FormSubmitEvent } from '#ui/types'
-import { ref } from 'vue'
+import { useDistrictId } from '@/store/DistrictInformation'
+import { ref, watch } from 'vue'
 import { type InferType, object, string } from 'yup'
 import { useUserSerialNumberApi } from '~/apis'
 import type { Role } from '~/types'
@@ -66,7 +67,7 @@ type Schema = InferType<typeof schema>
 
 const state = ref({
   data: {
-    districtId: '',
+    districtId: '333',
     email: undefined,
     password: undefined,
     role: 'user',
@@ -75,17 +76,88 @@ const state = ref({
   modal: false,
 })
 
+//  處理送出表單
+
+const FormDataSend = (index) => {
+  ReserveFuned.value = products.value[index] // 尋找index
+  console.log(ReserveFuned.value)
+}
+
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   // Do something with event.data
   console.log(event.data)
 }
 
-const {
-  execute: handleDistrictId,
-  data: districtIdResponse,
-  error: districtIdError,
-  status: districtIdStatus,
-} = await useUserSerialNumberApi.getAll()
+// const {
+//   execute: handleDistrictId,
+//   data: districtIdResponse,
+//   error: districtIdError,
+//   status: districtIdStatus,
+// } = await useUserSerialNumberApi.
+
+//  身份別下拉式選單功能
+
+const Roleitems = [
+  [{
+    label: 'DistrictLeader',
+    // avatar: {
+    //   src: 'https://avatars.githubusercontent.com/u/739984?v=4',
+    // },
+  }],
+  [{
+    label: 'User',
+    // avatar: {
+    //   src: 'https://avatars.githubusercontent.com/u/739984?v=4',
+    // },
+  }],
+]
+const districtStore = useDistrictId() // 獲取 store 實例
+
+// 日誌輸出
+console.log('District Name:', districtStore.name)
+console.log('All IDs:', districtStore.IDAll)
+
+const districtIDListref = ref<{ label: string, ID: string }[]>([])
+
+// 使用 watch 監聽 districtStore.IDAll 的變化
+watch(
+  () => districtStore.IDAll,
+  (newIDAll) => {
+    // 當 IDAll 更新時，重新映射並賦值給 districtIDListref
+    districtIDListref.value = newIDAll.map(item => ({
+      label: item.name,
+      ID: item._id,
+    }))
+  },
+  { immediate: true }, // 立即執行一次以初始化
+)
+
+console.log('+++++++', districtIDListref.value)
+
+const districtIDList = districtStore.IDAll.map(item => [{
+  label: item.name,
+  ID: item._id,
+}])
+
+console.log(districtIDList)
+
+const selectedDistrict = ref('')
+console.log(selectedDistrict.value)
+
+// const open = ref(false)
+
+const getSelectedLabel = computed(() => {
+  const selectedItem = districtIDList.value.find(item => item.value === selectedDistrict.value)
+  return selectedItem ? selectedItem.label : '選擇區'
+})
+
+const open1 = ref(true)
+const open2 = ref(true)
+
+defineShortcuts({
+  o: () => open1.value = !open1.value,
+  o1: () => open2.value = !open2.value,
+})
 </script>
 
 <template>
@@ -109,61 +181,6 @@ const {
         </div>
       </template>
       <div>
-        <!-- <UForm
-          :schema="schema"
-          :state="state.data"
-          class="space-y-4"
-          @submit="onSubmit"
-        > -->
-        <!-- <UFormGroup
-            label="Email"
-            name="email"
-          >
-            <UInput v-model="state.data.email" />
-          </UFormGroup> -->
-
-        <!-- <UFormGroup
-            label="Password"
-            name="password"
-          >
-            <UInput
-              v-model="state.data.password"
-              type="password"
-            />
-          </UFormGroup> -->
-
-        <!-- <UFormGroup
-          name="role"
-          label="權限"
-        >
-          <UInputMenu
-            v-model="state.data.role"
-            :options="roleOptions"
-          />
-        </UFormGroup> -->
-        <!-- <UFormGroup
-            name="districtId"
-            label="District"
-          >
-            <UInputMenu
-              v-model="state.data.districtId"
-              :options="districtOptions"
-            />
-          </UFormGroup> -->
-
-        <!-- <UFormGroup
-          name="districtId"
-          label="District"
-        >
-          <UInput v-model="IDvalue" />
-          <!-- 輸入區ID -->
-        <!-- </UFormGroup> -->
-        <!-- <UButton type="submit">
-
-          Submit
-        </UButton>
-        </UForm> -->
-
         <UForm
           :schema="schema"
           :state="state"
@@ -174,33 +191,39 @@ const {
             label="Role"
             name="Role"
           >
-            <UInput
-              v-model="state.Role"
-              type="text"
-            />
+            <UDropdown
+              v-model:open="open1"
+              :items="Roleitems"
+              :popper="{ placement: 'bottom-start' }"
+            >
+              <UButton
+                color="white"
+                label="Options"
+                trailing-icon="i-heroicons-chevron-down-20-solid"
+              />
+            </UDropdown>
           </UFormGroup>
-
           <UFormGroup
-            label="districtId"
-            name="districtId"
+            label="選擇區ID"
+            name="Role"
           >
-            <UInput
-              v-model="state.districtId"
-              type="text"
-            />
+            <UDropdown
+              v-model:open="open2"
+              :items="districtIDList"
+              :popper="{ placement: 'bottom-start' }"
+            >
+              <UButton
+                color="white"
+                label="getSelectedLabel"
+                trailing-icon="i-heroicons-chevron-down-20-solid"
+              />
+            </UDropdown>
           </UFormGroup>
 
-          <UFormGroup
-            label="notes"
-            name="notes"
+          <UButton
+            type="submit"
+            @click="FormDataSend"
           >
-            <UInput
-              v-model="state.notes"
-              type="text"
-            />
-          </UFormGroup>
-
-          <UButton type="submit">
             Submit
           </UButton>
         </UForm>

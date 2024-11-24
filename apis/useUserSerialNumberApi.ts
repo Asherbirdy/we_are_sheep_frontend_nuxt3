@@ -14,12 +14,12 @@ export const useUserSerialNumberApi = {
       // },
     })
   },
-  // create: async (payload: any) => {
-  //   return await useRequestApi<any>('/userSerialNumber/create', {
-  //     method: 'POST',
-  //     body: payload,
-  //   })
-  // },
+  create: async (payload: any) => {
+    return await useRequestApi<any>('/userSerialNumber/create', {
+      method: 'POST',
+      body: payload,
+    })
+  },
   // edit: async (id: number, payload: any) => {
   //   return await useRequestApi<any>(`/userSerialNumber/edit`, {
   //     method: 'PUT',

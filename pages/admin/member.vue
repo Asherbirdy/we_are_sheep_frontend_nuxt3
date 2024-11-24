@@ -1,20 +1,24 @@
-<script setup lang='ts'>
-import { AdminRoutes } from '~/enums'
+<script setup lang="ts">
+import { AdminRoutes } from "~/enums";
 
 definePageMeta({
-  layout: 'dashboard',
-})
+  layout: "dashboard",
+});
 
-const links = [{
-  label: '會員列表',
-  to: AdminRoutes.MemberList,
-}, {
-  label: '序號',
-  to: AdminRoutes.MemberSerial,
-}, {
-  label: '區',
-  to: AdminRoutes.MemberDistrict,
-}]
+const links = [
+  {
+    label: "會員列表",
+    to: AdminRoutes.MemberList,
+  },
+  {
+    label: "序號",
+    to: AdminRoutes.MemberSerial,
+  },
+  {
+    label: "區",
+    to: AdminRoutes.MemberDistrict,
+  },
+];
 </script>
 
 <template>
@@ -27,6 +31,6 @@ const links = [{
       </template>
     </UHorizontalNavigation>
     <NuxtPage />
-    <h2>77777777</h2>
+    <!-- <h2>77777777</h2> -->
   </div>
 </template>
