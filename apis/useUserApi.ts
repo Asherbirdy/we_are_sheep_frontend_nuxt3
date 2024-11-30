@@ -13,7 +13,14 @@ export const useUserApi = {
     return useRequestApi('/users/getAllUsers', {
       method: 'GET',
       server: false,
-      
+
+    })
+  },
+  showMe: async () => {
+    return useRequestApi('/users/showMe', {
+      method: 'GET',
+      server: false,
+
     })
   },
 }
