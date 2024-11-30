@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import { useDistrictApi } from '@/apis'
 import type { FormSubmitEvent } from '#ui/types'
 import { useDistrictId } from '@/store/DistrictInformation'
 import { ref, watch } from 'vue'
@@ -98,18 +99,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 //  身份別下拉式選單功能
 
 const Roleitems = [
-  [{
+  {
     label: 'DistrictLeader',
-    // avatar: {
-    //   src: 'https://avatars.githubusercontent.com/u/739984?v=4',
-    // },
-  }],
-  [{
+    value: 'districtLeader',
+  },
+  {
     label: 'User',
-    // avatar: {
-    //   src: 'https://avatars.githubusercontent.com/u/739984?v=4',
-    // },
-  }],
+    value: 'user',
+  },
 ]
 const districtStore = useDistrictId() // 獲取 store 實例
 
@@ -117,7 +114,7 @@ const districtStore = useDistrictId() // 獲取 store 實例
 console.log('District Name:', districtStore.name)
 console.log('All IDs:', districtStore.IDAll)
 
-const districtIDListref = ref<{ label: string, ID: string }[]>([])
+const districtIDListref = ref<{ label: string, value: string }[]>([])
 
 // 使用 watch 監聽 districtStore.IDAll 的變化
 watch(
@@ -126,7 +123,7 @@ watch(
     // 當 IDAll 更新時，重新映射並賦值給 districtIDListref
     districtIDListref.value = newIDAll.map(item => ({
       label: item.name,
-      ID: item._id,
+      value: item._id,
     }))
   },
   { immediate: true }, // 立即執行一次以初始化
@@ -134,12 +131,6 @@ watch(
 
 console.log('+++++++', districtIDListref.value)
 
-const districtIDList = districtStore.IDAll.map(item => [{
-  label: item.name,
-  ID: item._id,
-}])
-
-console.log(districtIDList)
 
 const selectedDistrict = ref('')
 console.log(selectedDistrict.value)
@@ -158,6 +149,15 @@ defineShortcuts({
   o: () => open1.value = !open1.value,
   o1: () => open2.value = !open2.value,
 })
+
+// 取得所有區
+const {
+  data: allDistrictsResponse,
+} = await useDistrictApi.getAll()
+const districts = allDistrictsResponse.value?.districts
+if (Array.isArray(districts)) { // 檢查傳入的物件是否為陣列
+  districtStore.saveIDs(districts)
+}
 </script>
 
 <template>
@@ -171,27 +171,15 @@ defineShortcuts({
           <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
             Modal
           </h3>
-          <UButton
-            color="gray"
-            variant="ghost"
-            icon="i-heroicons-x-mark-20-solid"
-            class="-my-1"
-            @click="state.modal = false"
-          />
+          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+            @click="state.modal = false" />
         </div>
       </template>
       <div>
-        <UForm
-          :schema="schema"
-          :state="state"
-          class="space-y-4"
-          @submit="onSubmit"
-        >
-          <UFormGroup
-            label="Role"
-            name="Role"
-          >
-            <UDropdown
+        <UForm :schema="schema" :state="state.data" class="space-y-4" @submit="onSubmit">
+          <UFormGroup label="Role" name="role">
+            <USelect v-model="state.data.role" color="primary" :options="Roleitems" />
+            <!-- <UDropdown
               v-model:open="open1"
               :items="Roleitems"
               :popper="{ placement: 'bottom-start' }"
@@ -201,13 +189,11 @@ defineShortcuts({
                 label="Options"
                 trailing-icon="i-heroicons-chevron-down-20-solid"
               />
-            </UDropdown>
+            </UDropdown> -->
           </UFormGroup>
-          <UFormGroup
-            label="選擇區ID"
-            name="Role"
-          >
-            <UDropdown
+          <UFormGroup label="選擇區ID" name="districtId">
+            <USelect v-model="state.data.districtId" color="primary" :options="districtIDListref" />
+            <!-- <UDropdown
               v-model:open="open2"
               :items="districtIDList"
               :popper="{ placement: 'bottom-start' }"
@@ -217,13 +203,10 @@ defineShortcuts({
                 label="getSelectedLabel"
                 trailing-icon="i-heroicons-chevron-down-20-solid"
               />
-            </UDropdown>
+            </UDropdown> -->
           </UFormGroup>
 
-          <UButton
-            type="submit"
-            @click="FormDataSend"
-          >
+          <UButton type="submit" @click="FormDataSend">
             Submit
           </UButton>
         </UForm>
