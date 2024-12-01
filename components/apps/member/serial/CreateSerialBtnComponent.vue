@@ -1,15 +1,15 @@
-<script setup lang='ts'>
-import { useDistrictApi } from '@/apis'
-import type { FormSubmitEvent } from '#ui/types'
-import { useDistrictId } from '@/store/DistrictInformation'
-import { ref, watch } from 'vue'
-import { type InferType, object, string } from 'yup'
-import { useUserSerialNumberApi } from '~/apis'
-import type { Role } from '~/types'
+<script setup lang="ts">
+import type { FormSubmitEvent } from "#ui/types";
+import { useDistrictApi } from "@/apis";
+import { useDistrictId } from "@/store/DistrictInformation";
+import { ref, watch } from "vue";
+import { type InferType, object, string } from "yup";
+import { useUserSerialNumberApi } from "~/apis";
+import type { Role } from "~/types";
 
 //  輸入區ID
-const IDvalue = ref('')
-console.log(IDvalue.value)
+const IDvalue = ref("");
+console.log(IDvalue.value);
 
 // type Schema = InferType<typeof schema>
 
@@ -58,127 +58,145 @@ console.log(IDvalue.value)
 // ----------------------------
 
 const schema = object({
-  email: string().email('Invalid email').required('Required'),
+  email: string().email("Invalid email").required("Required"),
   password: string()
-    .min(8, 'Must be at least 8 characters')
-    .required('Required'),
-})
+    .min(8, "Must be at least 8 characters")
+    .required("Required"),
+});
 
-type Schema = InferType<typeof schema>
+type Schema = InferType<typeof schema>;
 
 const state = ref({
   data: {
-    districtId: '333',
+    districtId: "333",
     email: undefined,
     password: undefined,
-    role: 'user',
-    notes: '',
+    role: "user",
+    notes: "",
   },
   modal: false,
-})
+});
 
 //  處理送出表單
 
 const FormDataSend = (index) => {
-  ReserveFuned.value = products.value[index] // 尋找index
-  console.log(ReserveFuned.value)
-}
+  ReserveFuned.value = products.value[index]; // 尋找index
+  console.log(ReserveFuned.value);
+};
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   // Do something with event.data
-  console.log(event.data)
+  console.log(event.data);
 }
 
-// const {
-//   execute: handleDistrictId,
-//   data: districtIdResponse,
-//   error: districtIdError,
-//   status: districtIdStatus,
-// } = await useUserSerialNumberApi.
-
-//  身份別下拉式選單功能
+const {
+  execute: handleDistrictId, //  執行請求
+} = await useUserSerialNumberApi.create({
+  role: state.value.data.role,
+  districtId: state.value.data.districtId,
+  notes: "test",
+});
 
 const Roleitems = [
   {
-    label: 'DistrictLeader',
-    value: 'districtLeader',
+    label: "DistrictLeader",
+    value: "districtLeader",
   },
   {
-    label: 'User',
-    value: 'user',
+    label: "User",
+    value: "user",
   },
-]
-const districtStore = useDistrictId() // 獲取 store 實例
+];
+const districtStore = useDistrictId(); // 獲取 store 實例
 
 // 日誌輸出
-console.log('District Name:', districtStore.name)
-console.log('All IDs:', districtStore.IDAll)
+console.log("District Name:", districtStore.name);
+console.log("All IDs:", districtStore.IDAll);
 
-const districtIDListref = ref<{ label: string, value: string }[]>([])
+const districtIDListref = ref<{ label: string; value: string }[]>([]);
 
 // 使用 watch 監聽 districtStore.IDAll 的變化
 watch(
   () => districtStore.IDAll,
   (newIDAll) => {
     // 當 IDAll 更新時，重新映射並賦值給 districtIDListref
-    districtIDListref.value = newIDAll.map(item => ({
+    districtIDListref.value = newIDAll.map((item) => ({
       label: item.name,
       value: item._id,
-    }))
+    }));
   },
-  { immediate: true }, // 立即執行一次以初始化
-)
+  { immediate: true } // 立即執行一次以初始化
+);
 
-console.log('+++++++', districtIDListref.value)
+console.log("+++++++", districtIDListref.value);
 
-
-const selectedDistrict = ref('')
-console.log(selectedDistrict.value)
+const selectedDistrict = ref("");
+console.log(selectedDistrict.value);
 
 // const open = ref(false)
 
 const getSelectedLabel = computed(() => {
-  const selectedItem = districtIDList.value.find(item => item.value === selectedDistrict.value)
-  return selectedItem ? selectedItem.label : '選擇區'
-})
+  const selectedItem = districtIDList.value.find(
+    (item) => item.value === selectedDistrict.value
+  );
+  return selectedItem ? selectedItem.label : "選擇區";
+});
 
-const open1 = ref(true)
-const open2 = ref(true)
+const open1 = ref(true);
+const open2 = ref(true);
 
 defineShortcuts({
-  o: () => open1.value = !open1.value,
-  o1: () => open2.value = !open2.value,
-})
+  o: () => (open1.value = !open1.value),
+  o1: () => (open2.value = !open2.value),
+});
 
 // 取得所有區
-const {
-  data: allDistrictsResponse,
-} = await useDistrictApi.getAll()
-const districts = allDistrictsResponse.value?.districts
-if (Array.isArray(districts)) { // 檢查傳入的物件是否為陣列
-  districtStore.saveIDs(districts)
+const { data: allDistrictsResponse } = await useDistrictApi.getAll();
+const districts = allDistrictsResponse.value?.districts;
+if (Array.isArray(districts)) {
+  // 檢查傳入的物件是否為陣列
+  districtStore.saveIDs(districts);
 }
 </script>
 
 <template>
-  <UButton @click="state.modal = true">
-    新增序號
-  </UButton>
+  <UButton @click="state.modal = true"> 新增序號 </UButton>
   <UModal v-model="state.modal">
-    <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+    <UCard
+      :ui="{
+        ring: '',
+        divide: 'divide-y divide-gray-100 dark:divide-gray-800',
+      }"
+    >
       <template #header>
         <div class="flex items-center justify-between">
-          <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+          <h3
+            class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
+          >
             Modal
           </h3>
-          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
-            @click="state.modal = false" />
+          <UButton
+            color="gray"
+            variant="ghost"
+            icon="i-heroicons-x-mark-20-solid"
+            class="-my-1"
+            @click="state.modal = false"
+          />
         </div>
       </template>
       <div>
-        <UForm :schema="schema" :state="state.data" class="space-y-4" @submit="onSubmit">
+        <UForm
+          :schema="schema"
+          :state="state.data"
+          class="space-y-4"
+          @submit="onSubmit"
+        >
           <UFormGroup label="Role" name="role">
-            <USelect v-model="state.data.role" color="primary" :options="Roleitems" />
+            <USelect
+              v-model="state.data.role"
+              color="primary"
+              :options="Roleitems"
+            />
             <!-- <UDropdown
               v-model:open="open1"
               :items="Roleitems"
@@ -192,7 +210,11 @@ if (Array.isArray(districts)) { // 檢查傳入的物件是否為陣列
             </UDropdown> -->
           </UFormGroup>
           <UFormGroup label="選擇區ID" name="districtId">
-            <USelect v-model="state.data.districtId" color="primary" :options="districtIDListref" />
+            <USelect
+              v-model="state.data.districtId"
+              color="primary"
+              :options="districtIDListref"
+            />
             <!-- <UDropdown
               v-model:open="open2"
               :items="districtIDList"
@@ -206,9 +228,7 @@ if (Array.isArray(districts)) { // 檢查傳入的物件是否為陣列
             </UDropdown> -->
           </UFormGroup>
 
-          <UButton type="submit" @click="FormDataSend">
-            Submit
-          </UButton>
+          <UButton type="submit" @click="handleDistrictId"> Submit </UButton>
         </UForm>
       </div>
     </UCard>
