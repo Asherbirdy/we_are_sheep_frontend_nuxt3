@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from "#ui/types";
+import { options } from "#build/eslint.config.mjs";
 import { useDistrictApi } from "@/apis";
 import { useDistrictId } from "@/store/DistrictInformation";
 import { ref, watch } from "vue";
@@ -57,6 +58,20 @@ console.log(IDvalue.value);
 
 // ----------------------------
 
+const { data } = useDistrictApi.getAll();
+console.log("data", data.value);
+
+const districtOption = ref([
+  {
+    _id: "673594eaee3860b7fbd7e9ad",
+    name: "77",
+  },
+  {
+    _id: "6739e419cdb04c9cbdd991bd",
+    name: "99",
+  },
+]);
+
 const schema = object({
   email: string().email("Invalid email").required("Required"),
   password: string()
@@ -68,7 +83,7 @@ type Schema = InferType<typeof schema>;
 
 const state = ref({
   data: {
-    districtId: "333",
+    districtId: "",
     email: undefined,
     password: undefined,
     role: "user",
@@ -89,13 +104,22 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   console.log(event.data);
 }
 
-const {
-  execute: handleDistrictId, //  執行請求
-} = await useUserSerialNumberApi.create({
-  role: state.value.data.role,
-  districtId: state.value.data.districtId,
-  notes: "test",
-});
+// const {
+//   execute: handleDistrictId, //  執行請求
+// } = await useUserSerialNumberApi.create({
+//   role: state.value.data.role,
+//   districtId: state.value.data.districtId,
+//   notes: "test",
+// });
+
+const handleEditDistrict = async () => {
+  const { execute } = await useUserSerialNumberApi.create({
+    role: state.value.data.role,
+    districtId: state.value.data.districtId,
+    notes: "test",
+  });
+  execute();
+};
 
 const Roleitems = [
   {
@@ -213,7 +237,10 @@ if (Array.isArray(districts)) {
             <USelect
               v-model="state.data.districtId"
               color="primary"
-              :options="districtIDListref"
+              :options="data?.districts"
+              value-attribute="_id"
+              option-attribute="name"
+              @change="(value) => (state.data.districtId = value)"
             />
             <!-- <UDropdown
               v-model:open="open2"
@@ -228,7 +255,7 @@ if (Array.isArray(districts)) {
             </UDropdown> -->
           </UFormGroup>
 
-          <UButton type="submit" @click="handleDistrictId"> Submit </UButton>
+          <UButton type="submit" @click="handleEditDistrict"> Submit </UButton>
         </UForm>
       </div>
     </UCard>
