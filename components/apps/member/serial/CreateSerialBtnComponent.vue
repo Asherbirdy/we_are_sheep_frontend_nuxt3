@@ -1,107 +1,60 @@
 <script setup lang="ts">
-import type { FormSubmitEvent } from "#ui/types";
-import { options } from "#build/eslint.config.mjs";
-import { useDistrictApi } from "@/apis";
-import { useDistrictId } from "@/store/DistrictInformation";
-import { ref, watch } from "vue";
-import { type InferType, object, string } from "yup";
-import { useUserSerialNumberApi } from "~/apis";
-import type { Role } from "~/types";
+import type { FormSubmitEvent } from '#ui/types'
+import { options } from '#build/eslint.config.mjs'
+import { useDistrictApi } from '@/apis'
+import { useDistrictId } from '@/store/DistrictInformation'
+
+import { ref, watch } from 'vue'
+import { type InferType, object, string } from 'yup'
+import { useUserSerialNumberApi } from '~/apis'
+
+import type { Role } from '~/types'
 
 //  輸入區ID
-const IDvalue = ref("");
-console.log(IDvalue.value);
-
-// type Schema = InferType<typeof schema>
-
-// const state = ref({
-//   data: {
-//     districtId: '',
-//     email: undefined,
-//     password: undefined,
-//     role: 'user',
-//     notes: '',
-//   },
-//   modal: false,
-// })
-
-// const { data: getDistrictResponse } = useDistrictApi.getAll()
-// const districtOptions = computed(() => getDistrictResponse.value?.districts.map(district => ({
-//   label: district.name,
-//   value: district._id,
-// })))
-
-// const schema = object({
-//   email: string().email('Invalid email').required('Required'),
-//   password: string()
-//     .min(8, 'Must be at least 8 characters')
-//     .required('Required'),
-//   role: string().required('Required'),
-//   districtId: string().required('Required'),
-// })
-
-// const roleOptions: {
-//   label: string
-//   value: Role
-// }[] = [
-//   { label: 'Full Time', value: 'fullTime' },
-//   { label: 'District Leader', value: 'districtLeader' },
-//   { label: 'Shepherd', value: 'shepherd' },
-//   { label: 'User', value: 'user' },
-// ]
-
-// async function onSubmit(event: FormSubmitEvent<Schema>) {
-//   // Do something with event.data
-//   // eslint-disable-next-line no-console
-//   console.log(event.data)
-// }
-
-// ----------------------------
-
-const { data } = useDistrictApi.getAll();
-console.log("data", data.value);
+const IDvalue = ref('')
+console.log(IDvalue.value)
 
 const districtOption = ref([
   {
-    _id: "673594eaee3860b7fbd7e9ad",
-    name: "77",
+    _id: '673594eaee3860b7fbd7e9ad',
+    name: '77',
   },
   {
-    _id: "6739e419cdb04c9cbdd991bd",
-    name: "99",
+    _id: '6739e419cdb04c9cbdd991bd',
+    name: '99',
   },
-]);
+])
 
 const schema = object({
-  email: string().email("Invalid email").required("Required"),
+  email: string().email('Invalid email').required('Required'),
   password: string()
-    .min(8, "Must be at least 8 characters")
-    .required("Required"),
-});
+    .min(8, 'Must be at least 8 characters')
+    .required('Required'),
+})
 
-type Schema = InferType<typeof schema>;
+type Schema = InferType<typeof schema>
 
 const state = ref({
   data: {
-    districtId: "",
+    districtId: '',
     email: undefined,
     password: undefined,
-    role: "user",
-    notes: "",
+    role: 'user',
+    notes: '',
   },
   modal: false,
-});
+})
 
 //  處理送出表單
 
-const FormDataSend = (index) => {
-  ReserveFuned.value = products.value[index]; // 尋找index
-  console.log(ReserveFuned.value);
-};
+// const FormDataSend = (index) => {
+//   ReserveFuned.value = products.value[index]; // 尋找index
+//   console.log(ReserveFuned.value);
+// };
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   // Do something with event.data
-  console.log(event.data);
+  console.log(event.data)
 }
 
 // const {
@@ -116,75 +69,84 @@ const handleEditDistrict = async () => {
   const { execute } = await useUserSerialNumberApi.create({
     role: state.value.data.role,
     districtId: state.value.data.districtId,
-    notes: "test",
-  });
-  execute();
-};
+    notes: 'test',
+  })
+  execute()
+}
+
+const useDistrictApiData = useDistrictId()
+
+onMounted(async () => {
+  await useDistrictApiData.fetchDistricts()
+  console.log('Districts999:', useDistrictApiData.districts) // 確保這裡的屬性名稱正確
+})
 
 const Roleitems = [
   {
-    label: "DistrictLeader",
-    value: "districtLeader",
+    label: 'DistrictLeader',
+    value: 'districtLeader',
   },
   {
-    label: "User",
-    value: "user",
+    label: 'User',
+    value: 'user',
   },
-];
-const districtStore = useDistrictId(); // 獲取 store 實例
+]
+const districtStore = useDistrictId() // 獲取 store 實例
 
 // 日誌輸出
-console.log("District Name:", districtStore.name);
-console.log("All IDs:", districtStore.IDAll);
+// console.log('District Name:', districtStore.name)
+// console.log('All IDs:', districtStore.IDAll)
 
-const districtIDListref = ref<{ label: string; value: string }[]>([]);
+const districtIDListref = ref<{ label: string, value: string }[]>([])
 
 // 使用 watch 監聽 districtStore.IDAll 的變化
 watch(
   () => districtStore.IDAll,
   (newIDAll) => {
     // 當 IDAll 更新時，重新映射並賦值給 districtIDListref
-    districtIDListref.value = newIDAll.map((item) => ({
+    districtIDListref.value = newIDAll.map(item => ({
       label: item.name,
       value: item._id,
-    }));
+    }))
   },
-  { immediate: true } // 立即執行一次以初始化
-);
+  { immediate: true }, // 立即執行一次以初始化
+)
 
-console.log("+++++++", districtIDListref.value);
+console.log('+++++++', districtIDListref.value)
 
-const selectedDistrict = ref("");
-console.log(selectedDistrict.value);
+const selectedDistrict = ref('')
+console.log(selectedDistrict.value)
 
 // const open = ref(false)
 
 const getSelectedLabel = computed(() => {
   const selectedItem = districtIDList.value.find(
-    (item) => item.value === selectedDistrict.value
-  );
-  return selectedItem ? selectedItem.label : "選擇區";
-});
+    item => item.value === selectedDistrict.value,
+  )
+  return selectedItem ? selectedItem.label : '選擇區'
+})
 
-const open1 = ref(true);
-const open2 = ref(true);
+const open1 = ref(true)
+const open2 = ref(true)
 
 defineShortcuts({
   o: () => (open1.value = !open1.value),
   o1: () => (open2.value = !open2.value),
-});
+})
 
 // 取得所有區
-const { data: allDistrictsResponse } = await useDistrictApi.getAll();
-const districts = allDistrictsResponse.value?.districts;
+const { data: allDistrictsResponse } = await useDistrictApi.getAll()
+const districts = allDistrictsResponse.value?.districts
 if (Array.isArray(districts)) {
   // 檢查傳入的物件是否為陣列
-  districtStore.saveIDs(districts);
+  districtStore.saveIDs(districts)
 }
 </script>
 
 <template>
-  <UButton @click="state.modal = true"> 新增序號 </UButton>
+  <UButton @click="state.modal = true">
+    新增序號
+  </UButton>
   <UModal v-model="state.modal">
     <UCard
       :ui="{
@@ -215,7 +177,10 @@ if (Array.isArray(districts)) {
           class="space-y-4"
           @submit="onSubmit"
         >
-          <UFormGroup label="Role" name="role">
+          <UFormGroup
+            label="Role"
+            name="role"
+          >
             <USelect
               v-model="state.data.role"
               color="primary"
@@ -233,11 +198,14 @@ if (Array.isArray(districts)) {
               />
             </UDropdown> -->
           </UFormGroup>
-          <UFormGroup label="選擇區ID" name="districtId">
+          <UFormGroup
+            label="選擇區ID"
+            name="districtId"
+          >
             <USelect
               v-model="state.data.districtId"
               color="primary"
-              :options="data?.districts"
+              :options="useDistrictApiData.districts"
               value-attribute="_id"
               option-attribute="name"
               @change="(value) => (state.data.districtId = value)"
@@ -255,7 +223,12 @@ if (Array.isArray(districts)) {
             </UDropdown> -->
           </UFormGroup>
 
-          <UButton type="submit" @click="handleEditDistrict"> Submit </UButton>
+          <UButton
+            type="submit"
+            @click="handleEditDistrict"
+          >
+            Submit
+          </UButton>
         </UForm>
       </div>
     </UCard>
