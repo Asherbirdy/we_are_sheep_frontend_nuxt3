@@ -5,7 +5,7 @@ import type { UserSerialNumberList } from '~/types'
 
 const serialNumberList = ref([])
 
-const { data: serialNumbers, refresh: refreshSerialNumbers } = await useUserSerialNumberApi.getAll({
+const { data: serialNumbers, execute: fetchSerialNumbers } = await useUserSerialNumberApi.getAll({
   transform: (data) => {
     return data.userSerialNumber.map((
       serial: UserSerialNumberList,
@@ -18,8 +18,9 @@ const { data: serialNumbers, refresh: refreshSerialNumbers } = await useUserSeri
     })) || []
   },
 })
-
 serialNumberList.value = serialNumbers.value
+
+// serialNumberList.value = serialNumbers.value
 // const apiX = await useUserSerialNumberApi.getAll()
 // const serialNumbers = apiX.data
 
@@ -32,16 +33,6 @@ const columns = [
   { key: 'actions' },
 ]
 
-// const serialNumberList = serialNumbers.value?.userSerialNumber.map((
-//   serial: UserSerialNumberList,
-// ) => ({
-//   id: serial._id,
-//   isUsed: serial.isUsed ? '已使用' : '未使用',
-//   districtId: serial.districtId?.name || '未指定',
-//   role: serial.role || '未指定',
-//   notes: serial.notes || '無備註',
-// })) || []
-
 const items = (row: any) => [
   [{
     label: 'Edit',
@@ -51,11 +42,13 @@ const items = (row: any) => [
   }],
 ]
 
-const onRefresh = () => {
-  refreshSerialNumbers()
+const onRefresh = async () => {
+  await nextTick() // 加上這個後就可以刷新資料了, 但有時會失靈
+  await fetchSerialNumbers()
   serialNumberList.value = serialNumbers.value
-  // TODO: 新增序號後, 列表如何自動更新 - xxxxx21313123 anita
 }
+
+fetchSerialNumbers()
 </script>
 
 <template>
