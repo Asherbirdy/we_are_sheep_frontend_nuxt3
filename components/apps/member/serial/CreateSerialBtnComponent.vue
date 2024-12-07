@@ -10,20 +10,9 @@ import { useUserSerialNumberApi } from '~/apis'
 
 import type { Role } from '~/types'
 
-//  輸入區ID
-const IDvalue = ref('')
-console.log(IDvalue.value)
-
-const districtOption = ref([
-  {
-    _id: '673594eaee3860b7fbd7e9ad',
-    name: '77',
-  },
-  {
-    _id: '6739e419cdb04c9cbdd991bd',
-    name: '99',
-  },
-])
+const props = defineProps<{
+  onRefresh: () => void
+}>()
 
 const schema = object({
   email: string().email('Invalid email').required('Required'),
@@ -31,8 +20,6 @@ const schema = object({
     .min(8, 'Must be at least 8 characters')
     .required('Required'),
 })
-
-type Schema = InferType<typeof schema>
 
 const state = ref({
   data: {
@@ -45,27 +32,7 @@ const state = ref({
   modal: false,
 })
 
-//  處理送出表單
-
-// const FormDataSend = (index) => {
-//   ReserveFuned.value = products.value[index]; // 尋找index
-//   console.log(ReserveFuned.value);
-// };
-
-async function onSubmit(event: FormSubmitEvent<Schema>) {
-  // Do something with event.data
-  console.log(event.data)
-}
-
-// const {
-//   execute: handleDistrictId, //  執行請求
-// } = await useUserSerialNumberApi.create({
-//   role: state.value.data.role,
-//   districtId: state.value.data.districtId,
-//   notes: "test",
-// });
-
-const handleEditDistrict = async () => {
+const handleCreateDistrict = async () => {
   const { execute } = await useUserSerialNumberApi.create({
     role: state.value.data.role,
     districtId: state.value.data.districtId,
@@ -74,11 +41,16 @@ const handleEditDistrict = async () => {
   execute()
 }
 
+async function onSubmit() {
+  await handleCreateDistrict()
+  await props.onRefresh()
+  state.value.modal = false
+}
+
 const useDistrictApiData = useDistrictId()
 
 onMounted(async () => {
   await useDistrictApiData.fetchDistricts()
-  console.log('Districts999:', useDistrictApiData.districts) // 確保這裡的屬性名稱正確
 })
 
 const Roleitems = [
@@ -92,47 +64,6 @@ const Roleitems = [
   },
 ]
 const districtStore = useDistrictId() // 獲取 store 實例
-
-// 日誌輸出
-// console.log('District Name:', districtStore.name)
-// console.log('All IDs:', districtStore.IDAll)
-
-const districtIDListref = ref<{ label: string, value: string }[]>([])
-
-// 使用 watch 監聽 districtStore.IDAll 的變化
-watch(
-  () => districtStore.IDAll,
-  (newIDAll) => {
-    // 當 IDAll 更新時，重新映射並賦值給 districtIDListref
-    districtIDListref.value = newIDAll.map(item => ({
-      label: item.name,
-      value: item._id,
-    }))
-  },
-  { immediate: true }, // 立即執行一次以初始化
-)
-
-console.log('+++++++', districtIDListref.value)
-
-const selectedDistrict = ref('')
-console.log(selectedDistrict.value)
-
-// const open = ref(false)
-
-const getSelectedLabel = computed(() => {
-  const selectedItem = districtIDList.value.find(
-    item => item.value === selectedDistrict.value,
-  )
-  return selectedItem ? selectedItem.label : '選擇區'
-})
-
-const open1 = ref(true)
-const open2 = ref(true)
-
-defineShortcuts({
-  o: () => (open1.value = !open1.value),
-  o1: () => (open2.value = !open2.value),
-})
 
 // 取得所有區
 const { data: allDistrictsResponse } = await useDistrictApi.getAll()
@@ -172,13 +103,13 @@ if (Array.isArray(districts)) {
       </template>
       <div>
         <UForm
+          title="新增序號"
           :schema="schema"
           :state="state.data"
           class="space-y-4"
-          @submit="onSubmit"
         >
           <UFormGroup
-            label="Role"
+            label="角色"
             name="role"
           >
             <USelect
@@ -186,17 +117,6 @@ if (Array.isArray(districts)) {
               color="primary"
               :options="Roleitems"
             />
-            <!-- <UDropdown
-              v-model:open="open1"
-              :items="Roleitems"
-              :popper="{ placement: 'bottom-start' }"
-            >
-              <UButton
-                color="white"
-                label="Options"
-                trailing-icon="i-heroicons-chevron-down-20-solid"
-              />
-            </UDropdown> -->
           </UFormGroup>
           <UFormGroup
             label="選擇區ID"
@@ -210,22 +130,11 @@ if (Array.isArray(districts)) {
               option-attribute="name"
               @change="(value) => (state.data.districtId = value)"
             />
-            <!-- <UDropdown
-              v-model:open="open2"
-              :items="districtIDList"
-              :popper="{ placement: 'bottom-start' }"
-            >
-              <UButton
-                color="white"
-                label="getSelectedLabel"
-                trailing-icon="i-heroicons-chevron-down-20-solid"
-              />
-            </UDropdown> -->
           </UFormGroup>
 
           <UButton
             type="submit"
-            @click="handleEditDistrict"
+            @click="onSubmit"
           >
             Submit
           </UButton>

@@ -20,7 +20,6 @@ export const useUserApi = {
     return useRequestApi('/users/showMe', {
       method: 'GET',
       server: false,
-
     })
   },
 }

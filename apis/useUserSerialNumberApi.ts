@@ -3,7 +3,7 @@ import type { UserSerialNumberResponse } from "@/types";
 
 // const nuxtApp = useNuxtApp()
 export const useUserSerialNumberApi = {
-  getAll: async () => {
+  getAll: async (options = {}) => {
     return await useRequestApi<UserSerialNumberResponse>(
       "/userSerialNumber/getAll",
       {
@@ -14,6 +14,7 @@ export const useUserSerialNumberApi = {
         // getCachedData(key) {
         //   return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
         // },
+        ...options,
       }
     );
   },
