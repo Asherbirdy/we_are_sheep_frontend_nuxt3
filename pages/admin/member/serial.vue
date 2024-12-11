@@ -3,7 +3,26 @@ import { useUserSerialNumberApi } from '@/apis'
 import CreateSerialBtnComponent from '@/components/apps/member/serial/CreateSerialBtnComponent.vue'
 import type { UserSerialNumberList } from '~/types'
 
-const { data: serialNumbers } = await useUserSerialNumberApi.getAll()
+const serialNumberList = ref([])
+
+const { data: serialNumbers, execute: fetchSerialNumbers } = await useUserSerialNumberApi.getAll({
+  transform: (data) => {
+    return data.userSerialNumber.map((
+      serial: UserSerialNumberList,
+    ) => ({
+      id: serial._id,
+      isUsed: serial.isUsed ? '已使用' : '未使用',
+      districtId: serial.districtId?.name || '未指定',
+      role: serial.role || '未指定',
+      notes: serial.notes || '無備註',
+    })) || []
+  },
+})
+serialNumberList.value = serialNumbers.value
+
+// serialNumberList.value = serialNumbers.value
+// const apiX = await useUserSerialNumberApi.getAll()
+// const serialNumbers = apiX.data
 
 const columns = [
   { key: 'id', label: 'ID' },
@@ -14,16 +33,6 @@ const columns = [
   { key: 'actions' },
 ]
 
-const serialNumberList = serialNumbers.value?.userSerialNumber.map((
-  serial: UserSerialNumberList,
-) => ({
-  id: serial._id,
-  isUsed: serial.isUsed ? '已使用' : '未使用',
-  districtId: serial.districtId?.name || '未指定',
-  role: serial.role || '未指定',
-  notes: serial.notes || '無備註',
-})) || []
-
 const items = (row: any) => [
   [{
     label: 'Edit',
@@ -32,12 +41,20 @@ const items = (row: any) => [
     click: () => console.log('Edit', row.id),
   }],
 ]
+
+const onRefresh = async () => {
+  await nextTick() // 加上這個後就可以刷新資料了, 但有時會失靈
+  await fetchSerialNumbers()
+  serialNumberList.value = serialNumbers.value
+}
+
+fetchSerialNumbers()
 </script>
 
 <template>
   <div>
     <div class="flex justify-end">
-      <CreateSerialBtnComponent />
+      <CreateSerialBtnComponent :on-refresh="onRefresh" />
     </div>
     <UTable
       :rows="serialNumberList"
