@@ -20,6 +20,10 @@ const links = [
     label: '會員管理',
     to: AdminRoutes.MemberList,
   },
+  {
+    label: '活動管理',
+    to: AdminRoutes.Activity,
+  },
 ]
 </script>
 

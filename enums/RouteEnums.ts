@@ -11,4 +11,5 @@ export enum AdminRoutes {
   MemberSerial = '/admin/member/serial',
   MemberDistrict = '/admin/member/district',
   LifeBibleBlog = '/admin/lifeBibleBlog',
+  Activity = '/admin/member/activity',
 }
