@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '/admin/member/serial': { ssr: false },
     '/admin/member/district': { ssr: false },
     '/admin/member/list': { ssr: false },
+    '/admin/member/activity': { ssr: false },
     '/login': { ssr: false },
   },
   devtools: { enabled: true },

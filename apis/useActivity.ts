@@ -3,7 +3,7 @@ import { useRequestApi } from '~/composables/useRequestApi'
 export const useActivity = {
 
   showActivity: async () => {
-    return useRequestApi('/activity?year=2024&month=12', {
+    return await useRequestApi('/activity?year=2025&month=12', {
       method: 'GET',
       server: false,
     })
