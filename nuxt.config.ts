@@ -41,6 +41,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@vite-pwa/nuxt',
     ['@pinia/nuxt', { autoImports: ['defineStore', 'acceptHMRUpdate'] }],
+    'dayjs-nuxt',
   ],
   eslint: {
     config: {
