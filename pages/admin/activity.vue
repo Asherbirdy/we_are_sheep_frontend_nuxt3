@@ -6,6 +6,11 @@ import { useMemberStore } from "@/store/UserStatus";
 import { idText } from "typescript";
 
 import { computed, onMounted, reactive, ref, watch } from "vue";
+
+definePageMeta({
+  layout: 'dashboard',
+})
+
 const dayjs = useDayjs()
 
 const yearsOptions = Array.from({ length: 51 }, (_, i) => ({ label: `${2024 + i}年`, value: `${2024 + i}` })); // 2024~2074
