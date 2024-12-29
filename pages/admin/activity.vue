@@ -124,7 +124,7 @@ async function sendForm() {
       time: createState.selectTime,
     }
   }
-  const fetchApi = modalType.value === "create" ? useActivity.addActivity : useActivity.putActivity
+  const fetchApi = modalType.value === "create" ? useActivity.addActivity : useActivity.putActivity    //修改活動
   await fetchApi(payload).then(() => {
     isOpen.value = false
     resetCreateState()
@@ -158,6 +158,7 @@ const onCreate = () => {
   modalType.value = 'create'
 }
 
+// 刪除活動
 const onDelete = (id: string) => {
   useActivity.deleteActivity(id).then(() => {
     fetchData(state)
