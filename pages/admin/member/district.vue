@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { DistrictApiKey, useDistrictApi } from '@/apis'
+import { useDistrictApi } from '@/apis'
+import { DistrictApiKey } from '@/apis/useDistrictApi.js'
 import { useDistrictId } from '@/store/DistrictInformation'
 import CreateDistrictBtnComponent from '~/components/apps/member/district/CreateDistrictBtnComponent.vue'
 import EditDistrictFormComponent from '~/components/apps/member/district/EditDistrictFormComponent.vue'
 
 import type { District } from '~/types'
-
 const districtStoreID = useDistrictId()
 
 definePageMeta({
