@@ -4,6 +4,7 @@ export const useActivity = {
   showActivity: async (payload: any) => {
     return await useRequestApi("/activity", {
       method: "GET",
+      lazy: true,
       server: false,
       params: payload,
     });

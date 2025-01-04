@@ -11,71 +11,85 @@ const activityList = ref([]);
 const isLoading = ref(false); // 載入狀態
 const errorMessage = ref(""); // 錯誤訊息
 
+const fetchData = async (payload: any) => {
+  const { data: activityData, status } = await useActivity.showActivity({
+    year: payload.selectedYear, // 詢問為何是payload
+    month: payload.selectedMonth,
+  });
+  activityList.value = activityData.value?.data || [];
+  isLoading.value = status !== 'success'
+  console.log(activityData);
+  console.log('status: ', status);
+};
+
+fetchData({
+  selectedYear: dayjs().format("YYYY"),
+  selectedMonth: dayjs().format("M"),
+})
+
 // 本地存儲的 Key
-const LOCAL_STORAGE_KEY = "activityList";
+// const LOCAL_STORAGE_KEY = "activityList";
 
-// 從 LocalStorage 加載資料
-const loadFromLocalStorage = () => {
-  const cachedData = localStorage.getItem(LOCAL_STORAGE_KEY);
-  if (cachedData) {
-    try {
-      activityList.value = JSON.parse(cachedData);
-      console.log("從 LocalStorage 加載資料:", activityList.value);
-    } catch (e) {
-      console.error("解析 LocalStorage 資料失敗:", e);
-    }
-  }
-};
+// // 從 LocalStorage 加載資料
+// const loadFromLocalStorage = () => {
+//   const cachedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+//   if (cachedData) {
+//     try {
+//       activityList.value = JSON.parse(cachedData);
+//       console.log("從 LocalStorage 加載資料:", activityList.value);
+//     } catch (e) {
+//       console.error("解析 LocalStorage 資料失敗:", e);
+//     }
+//   }
+// };
 
-// 將資料保存到 LocalStorage
-const saveToLocalStorage = () => {
-  try {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(activityList.value));
-    console.log("已將資料保存到 LocalStorage");
-  } catch (e) {
-    console.error("保存到 LocalStorage 失敗:", e);
-  }
-};
+// // 將資料保存到 LocalStorage
+// const saveToLocalStorage = () => {
+//   try {
+//     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(activityList.value));
+//     console.log("已將資料保存到 LocalStorage");
+//   } catch (e) {
+//     console.error("保存到 LocalStorage 失敗:", e);
+//   }
+// };
 
-// API 請求邏輯
-const fetchData = async () => {
-  isLoading.value = true;
-  errorMessage.value = ""; // 清空錯誤訊息
+// // API 請求邏輯
+// const fetchData = async () => {
+//   isLoading.value = true;
+//   errorMessage.value = ""; // 清空錯誤訊息
 
-  // 使用 dayjs-nuxt 獲取當前年份和月份
-  const currentYear = dayjs().format("YYYY"); // 當前年份
-  const currentMonth = dayjs().format("M"); // 當前月份（不補 0）
+//   // 使用 dayjs-nuxt 獲取當前年份和月份
+//   const currentYear = dayjs().format("YYYY"); // 當前年份
+//   const currentMonth = dayjs().format("M"); // 當前月份（不補 0）
 
-  try {
-    console.log("正在拉取資料...", { year: currentYear, month: currentMonth }); // 確認是否執行
-    const { data: activityData } = await useActivity.showActivity({
-      year: currentYear,
-      month: currentMonth,
-    });
+//   try {
+//     console.log("正在拉取資料...", { year: currentYear, month: currentMonth }); // 確認是否執行
+//     const { data: activityData } = await useActivity.showActivity({
+//       year: currentYear,
+//       month: currentMonth,
+//     });
 
-    console.log("API 回傳資料:", activityData); // 打印完整的 API 回傳資料
-    if (activityData && activityData.value?.data) {
-      activityList.value = activityData.value.data;
-      saveToLocalStorage(); // 保存資料到 LocalStorage
-    } else {
-      activityList.value = []; // 如果資料格式不正確，設為空陣列
-      console.warn("API 回傳資料格式異常:", activityData);
-    }
-  } catch (error) {
-    errorMessage.value = "無法載入活動資料，請稍後再試。";
-    console.error("拉取活動資料失敗:", error);
-  } finally {
-    isLoading.value = false;
-  }
-};
+//     console.log("API 回傳資料:", activityData); // 打印完整的 API 回傳資料
+//     if (activityData && activityData.value?.data) {
+//       activityList.value = activityData.value.data;
+//       // saveToLocalStorage(); // 保存資料到 LocalStorage
+//     } else {
+//       activityList.value = []; // 如果資料格式不正確，設為空陣列
+//       console.warn("API 回傳資料格式異常:", activityData);
+//     }
+//   } catch (error) {
+//     errorMessage.value = "無法載入活動資料，請稍後再試。";
+//     console.error("拉取活動資料失敗:", error);
+//   } finally {
+//     isLoading.value = false;
+//   }
+// };
 
-// 頁面初始化時檢查本地存儲，若無資料則打 API
-onMounted(() => {
-  loadFromLocalStorage();
-  if (activityList.value.length === 0) {
-    fetchData();
-  }
-});
+// // 頁面初始化時檢查本地存儲，若無資料則打 API
+// onMounted(() => {
+//   // loadFromLocalStorage();
+//   fetchData();
+// });
 </script>
 
 <template>

@@ -6,29 +6,10 @@ import { CookieEnums, PublicRoutes } from '@/enums'
 import { reactive, ref } from 'vue'
 import { type InferType, object, string } from 'yup'
 
-// 定義導航路由
-const routes = [
-  {
-    label: '生命讀經',
-    to: PublicRoutes.Home,
-  },
-  {
-    label: '近期活動',
-    to: PublicRoutes.News,
-  },
-  {
-    label: '會員中心', // 點擊後打開彈窗
-    action: () => {
-      showLogin() // 預設顯示登入表單
-      Modal() // 打開彈窗
-    },
-  },
-]
-
 // 控制彈窗開關的變數
 const isOpen = ref(false)
 // 控制當前顯示的表單（登入或註冊）
-const registered = ref(false) // 已註冊
+const registered = ref(true) // 已註冊
 const isLogin = ref(true) // 已登入
 const resultStatus = ref(null) // 執行結果
 
@@ -101,9 +82,31 @@ const setStatus = (status: boolean) => {
   resultStatus.value = status
   setTimeout(() => {
     resultStatus.value = null
+    isOpen.value = false
   }, 2000)
   //
 }
+
+// 定義導航路由
+const routes = [
+  {
+    label: '生命讀經',
+    to: PublicRoutes.Home,
+  },
+  {
+    label: '近期活動',
+    to: PublicRoutes.News,
+  },
+  {
+    label: '會員中心', // 點擊後打開彈窗
+    action: () => {
+      isOpen.value = true
+      // console.log('點擊會員中心')
+      // showLogin() // 預設顯示登入表單
+      // Modal() // 打開彈窗
+    },
+  },
+]
 
 // 登入表單提交處理函數
 const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
@@ -146,7 +149,7 @@ const onRegister = async (event: FormSubmitEvent<RegisterSchema>) => {
   }
 }
 
-// 彈窗開關函數
+/** 彈窗開關函數 */
 const Modal = () => {
   isOpen.value = !isOpen.value // 切換彈窗顯示狀態
   console.log('彈窗被打開')
@@ -182,6 +185,7 @@ const links = [
             :key="route.to"
             :to="route.to"
             class="text-gray-600"
+            v-on:click.prevent="route.action ? route.action() : null"
           >
             {{ route.label }}
           </NuxtLink>
