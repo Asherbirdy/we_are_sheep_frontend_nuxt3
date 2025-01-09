@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     '/admin/member/activity': { ssr: false },
     '/login': { ssr: false },
     '/index': { ssr: false },
+    '/login': { ssr: false },
   },
   devtools: { enabled: true },
   compatibilityDate: '2024-10-02',

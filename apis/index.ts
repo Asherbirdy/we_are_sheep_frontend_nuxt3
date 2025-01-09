@@ -1,9 +1,11 @@
 // export * from './useAuthApi'
-// export * from './useAuthTestApi'
+// export * from './useAuthApi'
+export * from './useAuthTestApi'
 // export * from './useDevApi'
 // export * from './useDistrictApi'
 // export * from './useTestApi'
-// export * from './useUserApi'
+// export * from './useTestApi'
+export * from './useUserApi'
 // export * from './useUserSerialNumberApi'
 // export * from './useActivity'
 
