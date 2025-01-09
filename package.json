@@ -3,11 +3,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev --host 0.0.0.0",
-    "generate": "nuxt generate",
+    "dev": "nuxt dev --dotenv .env.development --host 0.0.0.0",
+    "generate:prod": "nuxt generate --dotenv .env.production",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "typecheck": "vue-tsc --noEmit"
   },

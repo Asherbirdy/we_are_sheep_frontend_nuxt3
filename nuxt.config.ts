@@ -28,9 +28,9 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    payloadExtraction: true,
-    renderJsonPayloads: true, // 如果你的應用需要將 JSON 資料渲染到頁面上，則可以開啟此選項。這對於需要 SEO 的應用特別有用。
-    typedPages: true, // 如果你使用 TypeScript 並希望在頁面中獲得類型檢查，則可以開啟此選項。
+    payloadExtraction: false, // 關閉 payloadExtraction (SSG terminal 會報錯)
+    // renderJsonPayloads: true, // 如果你的應用需要將 JSON 資料渲染到頁面上，則可以開啟此選項。這對於需要 SEO 的應用特別有用。
+    // typedPages: true, // 如果你使用 TypeScript 並希望在頁面中獲得類型檢查，則可以開啟此選項。
   },
   modules: [
     '@vueuse/nuxt',
