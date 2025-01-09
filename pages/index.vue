@@ -41,7 +41,7 @@ const { data: activityData, status } = await useActivity.showActivity({
           <span class="text-black text-sm">{{ activity.date }}</span>
         </div>
       </div>
-      <div class="text-center text-[#98FB98] py-4">目前沒有活動資料。</div>
+      <!-- <div class="text-center text-[#98FB98] py-4">目前沒有活動資料。</div> -->
     </div>
   </div>
 </template>
