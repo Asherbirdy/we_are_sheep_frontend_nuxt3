@@ -3,12 +3,12 @@ import { pwa } from './pwa'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: true,
-  routeRules: {
-    '/admin/member/serial': { ssr: false },
-    '/admin/member/district': { ssr: false },
-    '/login': { ssr: false },
-  },
+  ssr: false,
+  // routeRules: {
+  //   '/admin/member/serial': { ssr: false },
+  //   '/admin/member/district': { ssr: false },
+  //   '/login': { ssr: false },
+  // },
   devtools: { enabled: true },
   compatibilityDate: '2024-10-02',
   runtimeConfig: {
@@ -22,12 +22,11 @@ export default defineNuxtConfig({
     esbuild: {
       options: { target: 'esnext' },
     },
-    // prerender: {
-    //   crawlLinks: false,
-    //   routes: ['/'],
-    //   ignore: ['/hi'],
-    // },
+    prerender: {
+      ignore: ['/200.html', '/404.html'],
+    },
   },
+
   experimental: {
     payloadExtraction: true,
     renderJsonPayloads: true, // 如果你的應用需要將 JSON 資料渲染到頁面上，則可以開啟此選項。這對於需要 SEO 的應用特別有用。
