@@ -4,11 +4,6 @@ import { pwa } from './pwa'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
-  // routeRules: {
-  //   '/admin/member/serial': { ssr: false },
-  //   '/admin/member/district': { ssr: false },
-  //   '/login': { ssr: false },
-  // },
   devtools: { enabled: true },
   compatibilityDate: '2024-10-02',
   runtimeConfig: {
@@ -39,6 +34,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@vite-pwa/nuxt',
     ['@pinia/nuxt', { autoImports: ['defineStore', 'acceptHMRUpdate'] }],
+    'dayjs-nuxt',
   ],
   eslint: {
     config: {

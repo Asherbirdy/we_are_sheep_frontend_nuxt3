@@ -6,6 +6,12 @@ export const useRequestApi = <DataT, ErrorT = any>(
 ) => {
   const config = useRuntimeConfig()
   const baseUrl = import.meta.env.DEV ? config.public.apiUrl : `${window.location.origin}/api/v1`
+  // 有處理.env
   const fetch = useNuxtApp().$Fetch
-  return useFetch<DataT, ErrorT>(`${baseUrl}${url}`, { ...options, $fetch: fetch } as any)
+  // baseUrl = http://84.10.7777.40:XXX/api/v9
+  // URL = /auth/login
+  return useFetch<DataT, ErrorT>(`${baseUrl}${url}`, {
+    ...options,
+    $fetch: fetch,
+  } as any)
 }

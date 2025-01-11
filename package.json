@@ -20,6 +20,7 @@
     "@pinia/nuxt": "^0.5.5",
     "@vite-pwa/nuxt": "^0.10.5",
     "@vueuse/nuxt": "^11.1.0",
+    "dayjs-nuxt": "2.1.11",
     "eslint": "^9.10.0",
     "eslint-plugin-format": "^0.1.2",
     "nuxt": "^3.13.2",

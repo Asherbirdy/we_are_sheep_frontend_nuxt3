@@ -1,25 +1,31 @@
-import type { UserSerialNumberResponse } from '@/types'
+import type { UserSerialNumberResponse } from "@/types";
 // import { useNuxtApp } from '#app'
 
 // const nuxtApp = useNuxtApp()
 export const useUserSerialNumberApi = {
-  getAll: async () => {
-    return await useRequestApi<UserSerialNumberResponse>('/userSerialNumber/getAll', {
-      method: 'GET',
-      server: false,
-      lazy: false,
-      // key: '/userSerialNumber/getAll',
-      // getCachedData(key) {
-      //   return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
-      // },
-    })
+  getAll: async (options = {}) => {
+    return await useRequestApi<UserSerialNumberResponse>(
+      "/userSerialNumber/getAll",
+      {
+        method: "GET",
+        server: false,
+        lazy: false,
+        // key: '/userSerialNumber/getAll',
+        // getCachedData(key) {
+        //   return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
+        // },
+        ...options,
+      }
+    );
   },
-  // create: async (payload: any) => {
-  //   return await useRequestApi<any>('/userSerialNumber/create', {
-  //     method: 'POST',
-  //     body: payload,
-  //   })
-  // },
+  create: async (payload: any) => {
+    return await useRequestApi<any>("/userSerialNumber/create", {
+      method: "POST",
+      body: payload,
+      watch: false,
+      immediate: false,
+    });
+  },
   // edit: async (id: number, payload: any) => {
   //   return await useRequestApi<any>(`/userSerialNumber/edit`, {
   //     method: 'PUT',
@@ -31,4 +37,4 @@ export const useUserSerialNumberApi = {
   //     method: 'DELETE',
   //   })
   // },
-}
+};

@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { useTestApi } from '@/apis'
+import { useTestApi, useUserApi } from '@/apis'
+
+// const data = ref(null)
 
 // 解構
-const { data } = await useTestApi.getAll()
+const { data } = await useUserApi.showAllUser()
 </script>
 
 <template>
