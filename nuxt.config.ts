@@ -16,6 +16,7 @@ export default defineNuxtConfig({
       apiUrl: process.env.NUXT_PUBLIC_API_URL,
       email: process.env.NUXT_EMAIL_TEST,
       password: process.env.NUXT_PASSWORD_TEST,
+      baseUrl: process.env.NUXT_PUBLIC_BASE_URL,
     },
   },
   nitro: {
@@ -46,6 +47,7 @@ export default defineNuxtConfig({
   },
   pwa,
   app: {
+    baseURL: process.env.NUXT_PUBLIC_BASE_URL,
     head: {
       viewport: 'width=device-width,initial-scale=1 user-scalable=no',
       link: [
