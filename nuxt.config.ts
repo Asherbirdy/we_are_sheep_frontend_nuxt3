@@ -7,6 +7,10 @@ export default defineNuxtConfig({
   routeRules: {
     '/admin/member/serial': { ssr: false },
     '/admin/member/district': { ssr: false },
+    '/admin/member/list': { ssr: false },
+    '/admin/member/activity': { ssr: false },
+    '/login': { ssr: false },
+    '/index': { ssr: false },
     '/login': { ssr: false },
   },
   devtools: { enabled: true },
@@ -39,6 +43,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@vite-pwa/nuxt',
     ['@pinia/nuxt', { autoImports: ['defineStore', 'acceptHMRUpdate'] }],
+    'dayjs-nuxt',
   ],
   eslint: {
     config: {

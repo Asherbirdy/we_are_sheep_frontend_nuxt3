@@ -143,7 +143,7 @@ const onRegister = async (event: FormSubmitEvent<RegisterSchema>) => {
   }
 };
 
-// 彈窗開關函數
+/** 彈窗開關函數 */
 const Modal = () => {
   isOpen.value = !isOpen.value; // 切換彈窗顯示狀態
   console.log("彈窗被打開");

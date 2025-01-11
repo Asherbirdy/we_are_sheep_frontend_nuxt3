@@ -9,13 +9,13 @@ const state = ref({
 })
 
 const {
-  execute: handleLogin,
+  execute: handleLogin, //  自己命名
   data: loginResponse,
   error: loginError,
   status: loginStatus,
-} = await useAuthTestApi.login(state.value)
+} = await useAuthTestApi.login(state.value) // 取得 INPUT 表單資料
 
-const onLogin = async () => {
+const onLogin = async () => { //    執行API函式
   await handleLogin()
   if (loginError.value) {
     // eslint-disable-next-line no-alert
