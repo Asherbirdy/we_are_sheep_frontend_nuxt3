@@ -18,7 +18,7 @@
     "@antfu/eslint-config": "^3.7.3",
     "@nuxt/devtools": "latest",
     "@nuxt/eslint": "^0.5.7",
-    "@nuxt/ui": "^3.0.0",
+    "@nuxt/ui": "^2.18.5",
     "@pinia/nuxt": "^0.5.5",
     "@vite-pwa/nuxt": "^0.10.5",
     "@vueuse/nuxt": "^11.1.0",

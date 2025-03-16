@@ -26,7 +26,7 @@ export default defineNuxtConfig({
   },
   modules: [
     '@vueuse/nuxt',
-    '@nuxt/ui',
+    '@nuxt/ui', // * 升級不了3.0版本就不要浪費時間
     '@nuxt/eslint',
     '@vite-pwa/nuxt',
     ['@pinia/nuxt', {
