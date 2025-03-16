@@ -3,7 +3,6 @@ import { pwa } from './pwa'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: false,
   devtools: { enabled: true },
   compatibilityDate: '2024-10-02',
   runtimeConfig: {
@@ -18,9 +17,6 @@ export default defineNuxtConfig({
     esbuild: {
       options: { target: 'esnext' },
     },
-    prerender: {
-      ignore: ['/200.html', '/404.html'],
-    },
   },
 
   experimental: {
@@ -33,7 +29,12 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/eslint',
     '@vite-pwa/nuxt',
-    ['@pinia/nuxt', { autoImports: ['defineStore', 'acceptHMRUpdate'] }],
+    ['@pinia/nuxt', {
+      autoImports: [
+        'defineStore',
+        'acceptHMRUpdate',
+      ],
+    }],
     'dayjs-nuxt',
   ],
   eslint: {
